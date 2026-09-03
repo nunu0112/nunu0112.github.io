@@ -2,8 +2,8 @@
   --bg: #fbfaf8;
   --text: #1c1c1c;
   --muted: #6b6b6b;
-  --accent: #7a2e2e;
-  --accent-soft: #f4e9e6;
+  --accent: #2b4f7e;
+  --accent-soft: #e8eef6;
   --card-bg: #ffffff;
   --border: #e6e2dc;
   --max-width: 760px;
@@ -280,16 +280,16 @@ footer {
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #16140f;
-    --text: #f0ece4;
-    --muted: #a89f92;
-    --accent: #d98b7a;
-    --accent-soft: #2c211d;
-    --card-bg: #1f1c17;
-    --border: #33302a;
+    --bg: #12161c;
+    --text: #eceff2;
+    --muted: #99a3ad;
+    --accent: #7fa8e0;
+    --accent-soft: #1c2733;
+    --card-bg: #191e26;
+    --border: #2b323c;
   }
-  .topbar { background: rgba(22, 20, 15, 0.85); }
-  .icon-links a:hover { color: #16140f; }
+  .topbar { background: rgba(18, 22, 28, 0.85); }
+  .icon-links a:hover { color: #12161c; }
 }
 
 @media (max-width: 560px) {
