@@ -1,21 +1,24 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>이름 | 유학 지원 포트폴리오</title>
+<title>Eunwoo Kim</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header class="hero">
-  <h1>이름 (Your Name)</h1>
-  <p class="tagline">전공 / 관심 연구 분야 한 줄 소개</p>
+  <h1>Eunwoo Kim</h1>
+  <p class="tagline">Ph.D. Applicant · Quantitative Psychology, Yonsei University</p>
+  <p class="tagline-sub">Cognitive Modeling · Reinforcement Learning · Sequential Sampling Models · Model-Based Cognitive Neuroscience</p>
   <nav>
     <a href="#about">About</a>
-    <a href="#research">연구 경험 / 프로젝트</a>
-    <a href="#awards">수상 / 활동</a>
-    <a href="#contact">연락처</a>
+    <a href="#research">Research</a>
+    <a href="#experience">Experience</a>
+    <a href="#teaching">Teaching</a>
+    <a href="#awards">Awards</a>
+    <a href="#contact">Contact</a>
   </nav>
 </header>
 
@@ -24,46 +27,143 @@
   <section id="about">
     <h2>About</h2>
     <p>
-      연세대학교 [학과명] 재학 중이며, [연구 관심사]에 관심을 갖고 있습니다.
-      이곳에 학력, 배경, 지원 동기 등을 간단히 소개하는 문단을 작성하세요.
+      I am a Ph.D. applicant in the Department of Psychology at Yonsei University, working with
+      Prof. Inhan Kang in Quantitative Psychology. My research combines reinforcement learning (RL)
+      and sequential sampling models (SSMs) to build unified, computational accounts of how people
+      make decisions &mdash; using both choice and response-time data to recover psychologically
+      meaningful, individual-level parameters.
+    </p>
+    <p>
+      I hold a B.S. in Computer Science and Engineering and a B.A. in Psychology from Seoul National
+      University, and an M.S. in Quantitative Psychology from Yonsei University. This background lets
+      me move fluidly between formal computational modeling (Bayesian estimation, Stan, hBayesDM) and
+      substantive psychological questions about value-based decision-making, addiction, and memory.
     </p>
     <ul class="edu-list">
-      <li><strong>2022 – 현재</strong> — 연세대학교, [학과명]</li>
-      <li><strong>20xx – 20xx</strong> — [고등학교/이전 학력]</li>
+      <li><strong>2024 &ndash; 2026</strong> &mdash; M.S. in Psychology (Quantitative Psychology), Yonsei University, advised by Prof. Inhan Kang</li>
+      <li><strong>2024</strong> &mdash; B.S. in Computer Science and Engineering, Seoul National University</li>
+      <li><strong>2024</strong> &mdash; B.A. in Psychology, Seoul National University</li>
     </ul>
   </section>
 
   <section id="research">
-    <h2>연구 경험 / 프로젝트</h2>
+    <h2>Research</h2>
 
     <div class="card">
-      <h3>프로젝트 / 연구 제목</h3>
-      <p class="meta">지도교수 · 기간</p>
-      <p>이 연구/프로젝트에서 수행한 역할과 성과를 간단히 설명하세요.</p>
+      <h3>Development and Validation of a Reinforcement Learning Sequential Sampling Model for Addictive Behavior</h3>
+      <p class="meta">with Inhan Kang &middot; Submitted, <em>Psychonomic Bulletin &amp; Review</em></p>
+      <p>
+        Behavioral addiction reflects a persistent preference for immediate rewards over long-term
+        outcomes &mdash; a breakdown in value-based decision-making. I integrated a reinforcement
+        learning model for the Iowa Gambling Task (IGT) with the evidence-accumulation structure of
+        sequential sampling models, producing a joint model of choices and response times. A
+        simulation study shows accurate recovery of all seven individual-level parameters, and the
+        model reproduces card-wise choice trajectories, win-stay/lose-shift patterns, and empirical RT
+        distributions in data from 20 older adults &mdash; matching or outperforming several
+        choice-only RL models.
+      </p>
     </div>
 
     <div class="card">
-      <h3>프로젝트 / 연구 제목 2</h3>
-      <p class="meta">기관 · 기간</p>
-      <p>설명을 작성하세요. 논문/발표 링크가 있다면 여기에 추가하세요.</p>
+      <h3>Joint Modeling of Behavioral and Neural Data via Lasso Factor-Analytic Neural Diffusion Decision Models: Reward-Modulated Recognition Memory</h3>
+      <p class="meta">with Seoyoung Choi, Sungwoo Ahn, Sanghoon Han, Inhan Kang &middot; Data analysis in progress</p>
+      <p>
+        A model-based cognitive neuroscience project linking neural activity to decision-making
+        parameters in reward-modulated recognition memory, using Lasso factor-analytic neural
+        diffusion decision models to jointly account for behavioral and neural data.
+      </p>
     </div>
 
+    <div class="card">
+      <h3>Predicting Fertility Desires Among Engaged Couples: An Interpretable Machine Learning Approach Using Dyadic Data</h3>
+      <p class="meta">with Hyoungbin Moon, Young-Hoon Kim, Inhan Kang &middot; Manuscript in preparation</p>
+      <p>
+        Applies interpretable machine learning methods to dyadic survey data from engaged couples to
+        identify predictors of fertility desire.
+      </p>
+    </div>
+
+    <h3 class="subheading">Conference Presentations</h3>
+    <ul class="plain-list">
+      <li>
+        <strong>International Meeting of the Psychometric Society (IMPS)</strong>, Oral presentation
+        &mdash; <em>Development and Validation of a Reinforcement Learning Sequential Sampling Model
+        for Addictive Behavior</em> (Jul. 2026)
+      </li>
+      <li>
+        <strong>Conference of the Korean Society of Psychological Measurement and Assessment</strong>,
+        Oral presentation &mdash; same title (Oct. 2025)
+      </li>
+      <li>
+        <strong>Annual Conference of the Korean Psychological Association</strong>, Poster presentation
+        &mdash; same title (Aug. 2025)
+      </li>
+    </ul>
+  </section>
+
+  <section id="experience">
+    <h2>Research Experience</h2>
+
+    <div class="card">
+      <h3>Research Assistant, Connectome Laboratory (PI: Jiook Cha)</h3>
+      <p class="meta">Seoul National University &middot; Feb.&ndash;Aug. 2024</p>
+      <ul>
+        <li>Led an independent project applying Generalized Random Forests to estimate heterogeneous treatment effects of COVID-19-related variables on well-being</li>
+        <li>Collaborated with the Center of Happiness Studies, Seoul National University, on data provision and joint interpretation of results</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Research Assistant, Quantitative Research Collaboratory Laboratory (PI: Amanda K. Montoya)</h3>
+      <p class="meta">University of California, Los Angeles &middot; Jan.&ndash;Dec. 2023</p>
+      <ul>
+        <li>Conducted literature reviews on tree-based ML methods in psychology, SPSS/SAS mediation/moderation macros, and a registered-reports survey study</li>
+        <li>Assisted with survey administration for the registered-reports project</li>
+        <li>Served as an independent analyst in a many-analysts-style project examining variability across independent analyses of the same dataset</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Research Assistant, Computational Clinical Science Laboratory (PI: Woo-Young Ahn)</h3>
+      <p class="meta">Seoul National University &middot; Aug.&ndash;Dec. 2022</p>
+      <ul>
+        <li>Contributed data visualization code for a project analyzing orthogonal go/no-go task data</li>
+        <li>Participated in a weekly literature study group on decision-making and computational methods</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="teaching">
+    <h2>Teaching Experience</h2>
+    <ul class="plain-list">
+      <li><strong>Bayesian Statistics for Psychology</strong> (Graduate) &mdash; Teaching Assistant, Fall 2025</li>
+      <li><strong>Psychological Statistics</strong> (Undergraduate) &mdash; Teaching Assistant, Spring 2025</li>
+      <li><strong>Data Science for Analysis of Human Behavior and Psychology</strong> (Undergraduate) &mdash; Teaching Assistant, Fall 2024</li>
+    </ul>
   </section>
 
   <section id="awards">
-    <h2>수상 / 활동</h2>
-    <ul>
-      <li>20xx — 수상/활동 내용</li>
-      <li>20xx — 수상/활동 내용</li>
+    <h2>Awards</h2>
+    <ul class="plain-list">
+      <li>Future Psychologist Award, Korean Psychological Association (2025)</li>
+      <li>Summa Cum Laude, Department of Psychology, Seoul National University (2024)</li>
+    </ul>
+
+    <h3 class="subheading">Skills</h3>
+    <ul class="plain-list">
+      <li><strong>Statistical Software</strong> &mdash; R, MATLAB</li>
+      <li><strong>Bayesian Modeling</strong> &mdash; Stan/RStan, hBayesDM</li>
+      <li><strong>Programming</strong> &mdash; Python, C, Java</li>
     </ul>
   </section>
 
   <section id="contact">
-    <h2>연락처</h2>
-    <p>Email: <a href="mailto:your-email@example.com">your-email@example.com</a></p>
-    <p><a href="#">CV 다운로드 (PDF)</a></p>
+    <h2>Contact</h2>
+    <p>Email: <a href="mailto:eunwookim@yonsei.ac.kr">eunwookim@yonsei.ac.kr</a></p>
+    <p><a href="assets/CV_Eunwoo_Kim.pdf" target="_blank">Download full CV (PDF)</a></p>
     <p>
       <a href="https://github.com/nunu0112" target="_blank">GitHub</a> ·
+      <a href="#" target="_blank">Google Scholar</a> ·
       <a href="#" target="_blank">LinkedIn</a>
     </p>
   </section>
@@ -71,7 +171,7 @@
 </main>
 
 <footer>
-  <p>&copy; 2026 이름. Built with GitHub Pages.</p>
+  <p>&copy; 2026 Eunwoo Kim. Built with GitHub Pages.</p>
 </footer>
 
 </body>
