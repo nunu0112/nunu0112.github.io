@@ -27,7 +27,6 @@
     <div class="avatar" aria-hidden="true">EK</div>
     <h1>Eunwoo Kim</h1>
     <p class="tagline">Postgraduate Researcher &middot; Department of Psychology, Yonsei University</p>
-    <p class="tagline-sub">Cognitive Modeling &middot; Reinforcement Learning &middot; Sequential Sampling Models &middot; Model&#8209;Based Cognitive Neuroscience</p>
 
     <ul class="icon-links">
       <li>
@@ -92,38 +91,52 @@
 
   <section id="research">
     <h2>Research</h2>
+    <p>
+      My research develops mechanistically interpretable models of psychological processes,
+      working across computational modeling, joint behavioral&ndash;neural modeling, and machine
+      learning. Below are my current projects.
+    </p>
 
     <article class="research-item">
-      <h3>Modeling choice and response time together</h3>
-      <p class="meta">Development and Validation of a Reinforcement Learning Sequential Sampling Model for Addictive Behavior &middot; with Inhan Kang &middot; Submitted, <em>Psychonomic Bulletin &amp; Review</em></p>
+      <h3>Modeling Choice and Response Time in Decision-Making</h3>
+      <p class="meta">Submitted</p>
       <p>
-        Behavioral addiction reflects a persistent preference for immediate rewards over long-term
-        outcomes &mdash; a breakdown in value-based decision-making. I integrated a reinforcement
-        learning model for the Iowa Gambling Task (IGT) with the evidence-accumulation structure of
-        sequential sampling models, producing a joint model of choices and response times. A
-        simulation study shows accurate recovery of all seven individual-level parameters, and the
-        model reproduces card-wise choice trajectories, win-stay/lose-shift patterns, and empirical
-        RT distributions in data from 20 older adults &mdash; matching or outperforming several
-        choice-only RL models.
+        Reinforcement learning models capture how the value of choices is learned and updated,
+        while sequential sampling models capture how such values unfold into a decision over time.
+        Combining the two allows choice and response time to be modeled within a single, unified
+        framework, yielding a more complete account of the decision process. I integrated a
+        reinforcement learning model with a sequential sampling model to jointly account for
+        choices and response times in the Iowa Gambling Task. The reinforcement learning component
+        updates subjective value estimates from trial-by-trial feedback, while the sequential
+        sampling component links these values to within-trial decision dynamics. I validated the
+        model&rsquo;s seven individual-level parameters through parameter recovery and applied it
+        to empirical task data, showing that it captures choice trajectories, win-stay/lose-shift
+        patterns, and response time distributions better than choice-only alternatives.
       </p>
     </article>
 
     <article class="research-item">
-      <h3>Linking neural and behavioral data</h3>
-      <p class="meta">Joint Modeling of Behavioral and Neural Data via Lasso Factor-Analytic Neural Diffusion Decision Models: Reward-Modulated Recognition Memory &middot; with Seoyoung Choi, Sungwoo Ahn, Sanghoon Han, Inhan Kang &middot; Data analysis in progress</p>
+      <h3>Joint Modeling of Behavioral and Neural Data</h3>
+      <p class="meta">Data analysis in progress</p>
       <p>
-        A model-based cognitive neuroscience project linking neural activity to decision-making
-        parameters in reward-modulated recognition memory, using Lasso factor-analytic neural
-        diffusion decision models to jointly account for behavioral and neural data.
+        The joint modeling framework in model-based cognitive neuroscience (MBCN; Turner et al.,
+        2017) estimates behavioral and neural components together with a linking function
+        connecting them, rather than modeling each separately and relating them afterward. I am
+        applying a joint modeling approach, the Lasso factor-analytic neural diffusion decision
+        model, to jointly analyze word recognition task data and fMRI data. The linking function
+        lets me identify which neural components correspond to specific decision-making
+        parameters. I am extending this approach to other tasks as well.
       </p>
     </article>
 
     <article class="research-item">
-      <h3>Interpretable ML for dyadic data</h3>
-      <p class="meta">Predicting Fertility Desires Among Engaged Couples: An Interpretable Machine Learning Approach Using Dyadic Data &middot; with Hyoungbin Moon, Young-Hoon Kim, Inhan Kang &middot; Manuscript in preparation</p>
+      <h3>Interpretable Machine Learning for Psychological Prediction</h3>
+      <p class="meta">Manuscript in preparation</p>
       <p>
-        Applies interpretable machine learning methods to dyadic survey data from engaged couples
-        to identify predictors of fertility desire.
+        Interpretable machine learning combines the predictive strength of flexible models with
+        insight into which factors drive an outcome. Using dyadic data from premarital couples, I
+        apply SHAP-based interpretation methods to identify which individual and partner
+        characteristics most strongly predict fertility desires.
       </p>
     </article>
   </section>
