@@ -7,22 +7,22 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=2">
+<link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
 
 <div class="topbar">
   <div class="topbar-inner">
-    <a class="brand" href="#top">Eunwoo Kim</a>
+    <a class="brand" href="index.html">Eunwoo Kim</a>
     <nav>
-      <a href="#about">About</a>
-      <a href="#research">Research</a>
-      <a href="#contact">Contact</a>
+      <a href="index.html" class="active">About</a>
+      <a href="research.html">Research</a>
+      <a href="contact.html">Contact</a>
     </nav>
   </div>
 </div>
 
-<header class="hero" id="top">
+<header class="hero">
   <div class="hero-inner">
     <img class="avatar" src="assets/profile.jpg" alt="Eunwoo Kim">
     <h1>Eunwoo Kim</h1>
@@ -83,77 +83,6 @@
         <span class="timeline-text">B.A. in Psychology, Seoul National University <br>B.S. in Computer Science and Engineering, Seoul National University</span>
       </div>
     </div>
-  </section>
-
-  <section id="research">
-    <h2>Research</h2>
-    <p>
-      My research develops mechanistically interpretable models of psychological processes,
-      working across computational modeling, joint behavioral&ndash;neural modeling, and machine
-      learning. Below are my current projects.
-    </p>
-
-    <article class="research-item">
-      <h3>Modeling Choice and Response Time in Decision-Making</h3>
-      <p class="meta">Submitted</p>
-      <p>
-        Reinforcement learning models capture how the value of choices is learned and updated,
-        while sequential sampling models capture how such values unfold into a decision over time.
-        Combining the two allows choice and response time to be modeled within a single, unified
-        framework, yielding a more complete account of the decision process. I integrated a
-        reinforcement learning model with a sequential sampling model to jointly account for
-        choices and response times in the Iowa Gambling Task. The reinforcement learning component
-        updates subjective value estimates from trial-by-trial feedback, while the sequential
-        sampling component links these values to within-trial decision dynamics. I validated the
-        model&rsquo;s seven individual-level parameters through parameter recovery and applied it
-        to empirical task data, showing that it captures choice trajectories, win-stay/lose-shift
-        patterns, and response time distributions better than choice-only alternatives.
-      </p>
-      <figure class="research-figure">
-        <img src="assets/research1.png" alt="Diagram of the joint reinforcement learning and sequential sampling model, showing the choice–feedback loop, per-deck value updating, and the evidence-accumulation process underlying response times.">
-        <figcaption>The joint model links trial-by-trial value updating from choices and feedback to the evidence-accumulation process that produces response times.</figcaption>
-      </figure>
-    </article>
-
-    <article class="research-item">
-      <h3>Joint Modeling of Behavioral and Neural Data</h3>
-      <p class="meta">Data analysis in progress</p>
-      <p>
-        The joint modeling framework in model-based cognitive neuroscience (MBCN; Turner et al.,
-        2017) estimates behavioral and neural components together with a linking function
-        connecting them, rather than modeling each separately and relating them afterward. I am
-        applying a joint modeling approach, the Lasso factor-analytic neural diffusion decision
-        model, to jointly analyze word recognition task data and fMRI data. The linking function
-        lets me identify which neural components correspond to specific decision-making
-        parameters. I am extending this approach to other tasks as well.
-      </p>
-      <figure class="research-figure">
-        <img src="assets/research2.png" alt="Top panel: trial-wise drift rate estimates over time, alternating between high and low states. Bottom panel: heatmap showing the association between cognitive components (drift, bias, nondecision time) and neural activity across regions of interest.">
-        <figcaption>Trial-wise drift rates recovered from behavioral data (top) and their association with neural activity across regions of interest (bottom).</figcaption>
-      </figure>
-    </article>
-
-    <article class="research-item">
-      <h3>Interpretable Machine Learning for Psychological Prediction</h3>
-      <p class="meta">Manuscript in preparation</p>
-      <p>
-        Interpretable machine learning combines the predictive strength of flexible models with
-        insight into which factors drive an outcome. Using dyadic data from premarital couples, I
-        apply SHAP-based interpretation methods to identify which individual and partner
-        characteristics most strongly predict fertility desires.
-      </p>
-      <figure class="research-figure">
-        <img src="assets/research3.png" alt="SHAP summary plot and feature importance bar chart showing the predictors of fertility desire, ranked by mean absolute SHAP value, led by living arrangement, yearly frequency, and family socioeconomic status.">
-        <figcaption>SHAP values show how each individual- and partner-level factor pushes predicted fertility desire up or down, ranked by overall importance.</figcaption>
-      </figure>
-    </article>
-  </section>
-
-  <section id="contact">
-    <h2>Contact</h2>
-    <p>Email: <a href="mailto:eunwookim@yonsei.ac.kr">eunwookim@yonsei.ac.kr</a></p>
-    <p><a href="assets/CV_Eunwoo_Kim.pdf" target="_blank">Download full CV (PDF)</a></p>
-    <p><a href="https://github.com/nunu0112" target="_blank">GitHub</a></p>
   </section>
 
 </main>

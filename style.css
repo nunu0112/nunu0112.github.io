@@ -60,6 +60,32 @@ a { color: var(--accent); }
 
 .topbar nav a:hover { color: var(--accent); }
 
+.topbar nav a.active { color: var(--accent); }
+
+/* Page header (Research, Contact) */
+.page-header {
+  padding: 3rem 1.5rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.page-header-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.page-header h1 {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 2.1rem;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.section-intro {
+  color: var(--muted);
+  margin: 0 0 2rem;
+}
+
 /* Hero */
 .hero {
   padding: 4.5rem 1.5rem 3rem;
