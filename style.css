@@ -82,7 +82,7 @@ a { color: var(--accent); }
 }
 
 .section-intro {
-  color: var(--muted);
+  color: var(--text);
   margin: 0 0 2rem;
 }
 
