@@ -98,24 +98,20 @@ a { color: var(--accent); }
   margin: 0 auto;
 }
 
-.avatar {
-  width: 128px;
-  height: 128px;
-  border-radius: 50%;
-  margin: 0 auto 1.5rem;
-  display: block;
-  object-fit: cover;
-  background: var(--accent-soft);
-  border: 3px solid var(--card-bg);
-  box-shadow: 0 0 0 1px var(--border);
-}
-
 .hero h1 {
   font-family: var(--serif);
   font-weight: 600;
   margin: 0 0 0.6rem;
   font-size: 2.6rem;
   letter-spacing: -0.01em;
+}
+
+.pronouns {
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 1.2rem;
+  color: var(--muted);
+  letter-spacing: 0;
 }
 
 .tagline {
