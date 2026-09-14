@@ -4,10 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Research &middot; Eunwoo Kim</title>
+<meta name="description" content="Research projects by Eunwoo Kim: reinforcement learning sequential sampling models, joint behavioral–neural modeling, interpretable machine learning, and causal forests.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=5">
+<link rel="stylesheet" href="style.css?v=10">
 </head>
 <body>
 
@@ -17,6 +18,8 @@
     <nav>
       <a href="index.html">About</a>
       <a href="research.html" class="active">Research</a>
+      <a href="experience.html">Experience</a>
+      <a href="skills.html">Skills</a>
       <a href="contact.html">Contact</a>
     </nav>
   </div>
@@ -25,78 +28,145 @@
 <header class="page-header">
   <div class="page-header-inner">
     <h1>Research</h1>
+    <p class="page-sub">
+      Four projects, one question: how do we build models of psychological processes whose
+      parameters can actually be believed?
+    </p>
   </div>
 </header>
 
-<main>
+<main class="wide">
 
-  <section id="research">
+  <section id="overview">
     <p class="section-intro">
-      My research develops mechanistically interpretable models of psychological processes,
-      working across computational modeling, joint behavioral&ndash;neural modeling, and machine
-      learning. Below are my current projects.
+      My projects differ in method &mdash; Bayesian cognitive models, joint neural&ndash;behavioral
+      models, tree ensembles, causal forests &mdash; but share a structure. Each begins with a
+      process that cannot be observed directly, specifies a model that would generate the observed
+      data if that process were real, and then spends as much effort establishing that the model's
+      estimates are trustworthy as on the estimates themselves. Each page below gives the
+      background, the methods in technical detail, and the results.
     </p>
 
-    <article class="research-item">
-      <h3>Modeling Choice and Response Time in Decision-Making</h3>
-      <p class="meta">Submitted</p>
+    <a class="project-card" href="research-rlssm.html">
+      <div class="card-tags">
+        <span class="badge">Under review</span>
+        <span class="tag">Reinforcement learning</span>
+        <span class="tag">Racing diffusion</span>
+        <span class="tag">Stan / HMC</span>
+        <span class="tag">Parameter recovery</span>
+      </div>
+      <h3>Modeling Choice and Response Time in Value-Based Decision-Making</h3>
       <p>
-        Reinforcement learning models capture how the value of choices is learned and updated,
-        while sequential sampling models capture how such values unfold into a decision over time.
-        Combining the two allows choice and response time to be modeled within a single, unified
-        framework, yielding a more complete account of the decision process. I integrated a
-        reinforcement learning model with a sequential sampling model to jointly account for
-        choices and response times in the Iowa Gambling Task. The reinforcement learning component
-        updates subjective value estimates from trial-by-trial feedback, while the sequential
-        sampling component links these values to within-trial decision dynamics. I validated the
-        model&rsquo;s seven individual-level parameters through parameter recovery and applied it
-        to empirical task data, showing that it captures choice trajectories, win-stay/lose-shift
-        patterns, and response time distributions better than choice-only alternatives.
+        Reinforcement learning models of the Iowa Gambling Task use choices alone and recover
+        individual-level parameters poorly. I replaced the softmax choice rule with a racing
+        diffusion process, derived the joint likelihood of choice and response time, and
+        implemented it in Stan &mdash; then showed by simulation that all seven person-level
+        parameters recover accurately, where the standard benchmark model does not.
       </p>
-      <figure class="research-figure">
-        <img src="assets/research1.png" alt="Diagram of the joint reinforcement learning and sequential sampling model, showing the choice–feedback loop, per-deck value updating, and the evidence-accumulation process underlying response times.">
-        <figcaption>The joint model links trial-by-trial value updating from choices and feedback to the evidence-accumulation process that produces response times.</figcaption>
-      </figure>
-    </article>
+      <span class="card-more">Background, model equations, estimation, and validation &rarr;</span>
+    </a>
 
-    <article class="research-item">
-      <h3>Joint Modeling of Behavioral and Neural Data</h3>
-      <p class="meta">Data analysis in progress</p>
+    <a class="project-card" href="research-jointmodel.html">
+      <div class="card-tags">
+        <span class="badge">Analysis in progress</span>
+        <span class="tag">Diffusion decision model</span>
+        <span class="tag">fMRI</span>
+        <span class="tag">Factor analysis</span>
+        <span class="tag">Bayesian lasso</span>
+      </div>
+      <h3>Joint Modeling of Single-Trial Behavior and fMRI Activity</h3>
       <p>
-        The joint modeling framework in model-based cognitive neuroscience (MBCN; Turner et al.,
-        2017) estimates behavioral and neural components together with a linking function
-        connecting them, rather than modeling each separately and relating them afterward. I am
-        applying a joint modeling approach, the Lasso factor-analytic neural diffusion decision
-        model, to jointly analyze word recognition task data and fMRI data. The linking function
-        lets me identify which neural components correspond to specific decision-making
-        parameters. I am extending this approach to other tasks as well.
+        Model-based cognitive neuroscience usually estimates cognitive parameters first and
+        correlates them with brain activity afterwards, discarding uncertainty and letting
+        information flow only one way. I extended a lasso factor-analytic neural diffusion
+        decision model to a rewarded recognition-memory task so that single-trial decision
+        parameters and regional brain responses are estimated in one pass.
       </p>
-      <figure class="research-figure">
-        <img src="assets/research2.png" alt="Top panel: trial-wise drift rate estimates over time, alternating between high and low states. Bottom panel: heatmap showing the association between cognitive components (drift, bias, nondecision time) and neural activity across regions of interest.">
-        <figcaption>Trial-wise drift rates recovered from behavioral data (top) and their association with neural activity across regions of interest (bottom).</figcaption>
-      </figure>
-    </article>
+      <span class="card-more">Framework, linking function, and estimation routine &rarr;</span>
+    </a>
 
-    <article class="research-item">
-      <h3>Interpretable Machine Learning for Psychological Prediction</h3>
-      <p class="meta">Manuscript in preparation</p>
+    <a class="project-card" href="research-fertility.html">
+      <div class="card-tags">
+        <span class="badge">In preparation</span>
+        <span class="tag">Random forests</span>
+        <span class="tag">SHAP</span>
+        <span class="tag">Dyadic data</span>
+        <span class="tag">Grouped cross-validation</span>
+      </div>
+      <h3>Interpretable Machine Learning for Dyadic Prediction</h3>
       <p>
-        Interpretable machine learning combines the predictive strength of flexible models with
-        insight into which factors drive an outcome. Using dyadic data from premarital couples, I
-        apply SHAP-based interpretation methods to identify which individual and partner
-        characteristics most strongly predict fertility desires.
+        Fertility desires are negotiated by two people, which breaks the independence that
+        ordinary cross-validation assumes. I built a couple-grouped, leakage-controlled
+        prediction pipeline with out-of-fold SHAP attribution, and used it to ask whether knowing
+        someone's partner adds predictive information beyond knowing the person &mdash; a question
+        about redundancy that a regression coefficient cannot answer.
       </p>
-      <figure class="research-figure">
-        <img src="assets/research3.png" alt="SHAP summary plot and feature importance bar chart showing the predictors of fertility desire, ranked by mean absolute SHAP value, led by living arrangement, yearly frequency, and family socioeconomic status.">
-        <figcaption>SHAP values show how each individual- and partner-level factor pushes predicted fertility desire up or down, ranked by overall importance.</figcaption>
-      </figure>
-    </article>
+      <span class="card-more">Design, leakage controls, and the incremental-validity test &rarr;</span>
+    </a>
+
+    <a class="project-card" href="research-grf.html">
+      <div class="card-tags">
+        <span class="badge neutral">Undergraduate thesis</span>
+        <span class="tag">Causal forests</span>
+        <span class="tag">AIPW</span>
+        <span class="tag">Heterogeneous effects</span>
+        <span class="tag">R / grf</span>
+      </div>
+      <h3>Heterogeneous Treatment Effects of COVID-19 Events on Well-Being</h3>
+      <p>
+        A published study had asked whether extraverts suffered more under social distancing, using
+        interactions specified in advance. I re-asked the question inside a potential-outcomes
+        framework with generalized random forests, letting the data locate the heterogeneity, and
+        gated every interpretation behind a formal calibration test.
+      </p>
+      <span class="card-more">Estimator, identification, and what replicated &rarr;</span>
+    </a>
+  </section>
+
+  <section id="presentations">
+    <h2>Conference Presentations</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <span class="timeline-date">Jul 2026</span>
+        <span class="timeline-text">
+          <span class="timeline-role">International Meeting of the Psychometric Society (IMPS)</span>
+          <span class="timeline-meta">
+            Oral presentation &middot; <em>Development and Validation of a Reinforcement Learning
+            Sequential Sampling Model for Addictive Behavior</em>
+          </span>
+        </span>
+      </div>
+      <div class="timeline-item">
+        <span class="timeline-date">Sep 2026</span>
+        <span class="timeline-text">
+          <span class="timeline-role">Korean Society for Computational Neuroscience (CBrain)</span>
+          <span class="timeline-meta">
+            Poster presentation &middot; <em>Joint Modeling of Single-Trial Behavior and fMRI
+            Activity</em>
+          </span>
+        </span>
+      </div>
+      <div class="timeline-item">
+        <span class="timeline-date">Oct 2025</span>
+        <span class="timeline-text">
+          <span class="timeline-role">Korean Society of Psychological Measurement and Assessment</span>
+          <span class="timeline-meta">Oral presentation &middot; <em>Development and Validation of a Reinforcement Learning Sequential Sampling Model for Addictive Behavior</em></span>
+        </span>
+      </div>
+      <div class="timeline-item">
+        <span class="timeline-date">Aug 2025</span>
+        <span class="timeline-text">
+          <span class="timeline-role">Annual Conference of the Korean Psychological Association</span>
+          <span class="timeline-meta">Poster presentation &middot; <em>Development and Validation of a Reinforcement Learning Sequential Sampling Model for Addictive Behavior</em></span>
+        </span>
+      </div>
+    </div>
   </section>
 
 </main>
 
 <footer>
-  <p>&copy; 2026 Eunwoo Kim. Built with GitHub Pages.</p>
+  <p>&copy; 2026 Eunwoo Kim &middot; Built with GitHub Pages</p>
 </footer>
 
 </body>

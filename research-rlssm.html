@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Choice and Response Time in Decision-Making &middot; Eunwoo Kim</title>
+<meta name="description" content="A reinforcement learning sequential sampling model for the Iowa Gambling Task: racing diffusion accumulators, Stan/HMC estimation, and parameter recovery validation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=10">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">Eunwoo Kim</a>
+    <nav>
+      <a href="index.html">About</a>
+      <a href="research.html" class="active">Research</a>
+      <a href="experience.html">Experience</a>
+      <a href="skills.html">Skills</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="page-header">
+  <div class="page-header-inner">
+    <p class="breadcrumb"><a href="research.html">Research</a><span>/</span>Choice and response time</p>
+    <h1>Modeling Choice and Response Time in Value-Based Decision-Making</h1>
+    <p class="page-sub">
+      A reinforcement learning sequential sampling model for the Iowa Gambling Task, built so that
+      one mechanism explains what people choose and how long they take &mdash; and validated to the
+      point where individual parameter estimates can be used as measurements.
+    </p>
+  </div>
+</header>
+
+<main class="wide">
+
+  <div class="study-meta">
+    <div><span class="meta-label">Authors</span> Eunwoo Kim &amp; Inhan Kang</div>
+    <div><span class="meta-label">Status</span> Under review, <em>Psychonomic Bulletin &amp; Review</em></div>
+    <div><span class="meta-label">Role</span> First author; M.S. thesis</div>
+  </div>
+
+  <section>
+    <h2>Background</h2>
+    <p>
+      Behavioral addiction is marked by persistent pursuit of immediate reward despite mounting
+      long-term cost &mdash; a breakdown in value-based decision-making. The <strong>Iowa Gambling
+      Task</strong> (IGT; Bechara et al., 1994) is the standard laboratory assay, and a family of
+      reinforcement learning models has grown up around it to explain performance in mechanistic
+      terms: PVL-Delta (Ahn et al., 2008), VPP (Worthy et al., 2013), the Outcome-Representation
+      Learning model (ORL; Haines et al., 2018), and VSE (Ligneul et al., 2019).
+    </p>
+    <p>Two problems motivated this project.</p>
+
+    <h3>Gap 1 &mdash; parameter recovery has been under-scrutinized</h3>
+    <p>
+      These models are used to make claims about individuals: that a particular patient learns
+      slowly from punishment, or perseverates. Such claims are only licensed if the model can
+      retrieve known parameter values from data it generated itself. Yet PVL-Delta and VPP were
+      introduced with no recovery analysis at all; ORL reported recovery only as a distribution of
+      correlations, with two parameters recovering poorly and the interpretive consequences left
+      undiscussed; and VSE showed regression lines without per-individual scatter, so individual-level
+      recoverability could not be judged.
+    </p>
+
+    <h3>Gap 2 &mdash; choice-only models discard response time</h3>
+    <p>
+      Many cognitive models fit the same choice patterns equally well, so choice alone cannot
+      discriminate between competing theoretical accounts. It also under-constrains estimation.
+      ORL is the worked example: its three components &mdash; expected value, expected frequency,
+      and perseveration &mdash; can offset one another, so choices alone cannot say which mechanism
+      produced a given deck preference. That trade-off is a direct cause of its poor recovery.
+      Response time is cheap to collect, continuous and right-skewed, and carries information of a
+      qualitatively different kind; joint choice&ndash;RT modeling is well established elsewhere in
+      mathematical psychology and psychometrics.
+    </p>
+    <div class="callout">
+      <strong>The idea.</strong> Apply the RL&ndash;SSM framework to the IGT for the first time.
+      Reinforcement learning describes learning <em>across</em> trials; sequential sampling models
+      describe evidence accumulation <em>within</em> a trial. Joining them yields one mechanistic
+      account of both channels &mdash; and the structural constraints response time imposes should
+      make the person-level parameters identifiable.
+    </div>
+  </section>
+
+  <section>
+    <h2>Methods</h2>
+
+    <figure class="research-figure">
+      <img src="assets/research/rlssm-schematic.png" alt="Schematic of the IGT-RL-SSM: a choice among decks A–D produces gain/loss feedback, which updates the subjective value of the chosen deck as the sum of expected value, expected frequency, and scaled perseveration; those values set the drift rates of four racing diffusion accumulators, and the first accumulator to reach threshold b determines both the choice and the decision time.">
+        <figcaption><span class="fig-label">Figure 1.</span> The model architecture. Trial-by-trial
+        feedback updates each deck's subjective value <code>V_j = ev + ef + &beta;<sub>P</sub>&middot;ps</code>;
+        those values scale the drift rates of four racing diffusion accumulators; the first to reach
+        threshold <code>b</code> produces the choice, and the response time is that decision time
+        plus non-decision time <code>&tau;</code>.</figcaption>
+    </figure>
+
+    <h3>Task and data</h3>
+    <ul class="method-list">
+      <li><span class="m-label">Task</span> Computerized IGT, 100 trials, four decks. Decks A and B
+        give large immediate gains but net &minus;250 USD per 10 trials; C and D give smaller gains
+        and net +250. Loss frequency is crossed with magnitude, so frequent- and infrequent-loss
+        decks exist on both sides.</li>
+      <li><span class="m-label">Sample</span> 20 older adults (19 female; ages 67&ndash;87, mean 77),
+        recruited through local senior centers as part of a larger project on late-life social
+        isolation and addiction vulnerability. K-MMSE &lt; 24 was exclusionary.</li>
+      <li><span class="m-label">Response time definition</span> Behavioral data were collected inside
+        a concurrent fNIRS study requiring a fixed 6-second trial, so RT is defined as the interval
+        from the previous trial's feedback onset to the current card selection &mdash; the time to
+        update value representations and select. Non-responses (~0.6% of trials) were excluded;
+        because no feedback followed them, no learning occurred, so exclusion is model-consistent.</li>
+      <li><span class="m-label">Representativeness</span> Choice trajectories were compared against
+        the ten healthy-adult IGT datasets compiled by Steingroever et al. (2015) and found broadly
+        consistent.</li>
+    </ul>
+
+    <h3>Reinforcement learning component</h3>
+    <p>
+      The learning model is built on ORL, whose deck utility is the sum of expected value, expected
+      frequency, and perseveration. The key modification is in how the learning rates are split.
+      Where ORL separates rates by <em>outcome valence</em> (one for rewards, one for punishments),
+      this model separates them by <em>the kind of information being updated</em> &mdash; one rate
+      for expected value, one for expected frequency &mdash; with each component updating
+      independently on every trial.
+    </p>
+    <ul class="method-list">
+      <li><span class="m-label">Expected value &mdash; delta rule</span>
+        <code>ev_j(t+1) = ev_j(t) + A_ev &middot; [x(t) &minus; ev_j(t)]</code>, with
+        <code>A_ev &isin; (0,1)</code> governing sensitivity to prediction error.</li>
+      <li><span class="m-label">Expected frequency &mdash; sign-based learning</span> Motivated by
+        the robust win-frequency effect. The chosen deck updates toward <code>sgn(x(t))</code>; every
+        unchosen deck updates toward <code>&minus;sgn(x(t))/3</code>, so the model encodes
+        <em>relative</em> win frequency across alternatives rather than treating decks in isolation.</li>
+      <li><span class="m-label">Perseveration</span> Decays geometrically with
+        <code>K = 3^(K&prime;) &minus; 1</code>, <code>K&prime; &isin; (0,5)</code>, following the
+        reparameterization Haines et al. (2018) found optimal.</li>
+      <li><span class="m-label">Integration</span>
+        <code>V_j = ev_j + ef_j + &beta;<sub>P</sub>&middot;ps_j</code>, with
+        <code>&beta;<sub>P</sub></code> estimated unconstrained so that its sign distinguishes
+        perseveration from alternation rather than assuming one of them.</li>
+    </ul>
+
+    <h3>Sequential sampling component and the linking function</h3>
+    <p>
+      The evidence-accumulation stage is a <strong>Racing Diffusion Model</strong> &mdash; one
+      independent diffusion accumulator per deck, all racing in parallel, with the first to reach
+      threshold determining the choice and its first-passage time giving the decision time. A racing
+      architecture was chosen over the binary diffusion decision model precisely because it extends
+      directly to the four-alternative structure of the IGT while remaining compatible with
+      trial-by-trial value updating.
+    </p>
+    <ul class="method-list">
+      <li><span class="m-label">Estimated SSM parameters</span> threshold <code>b</code> (response
+        caution), non-decision time <code>&tau;</code> (encoding plus motor execution), and drift
+        scaling <code>v_s</code> (which maps the learned-value scale onto the drift-rate scale).</li>
+      <li><span class="m-label">Linking function</span>
+        <code>v_j(t) = v_s &middot; [V_j(t) &minus; V_k(t)]</code>, where <code>V_k</code> is the
+        minimum subjective value on that trial, guaranteeing non-negative drift rates. Higher learned
+        value means faster accumulation, hence both a higher choice probability and a shorter RT.
+        This replaces the conventional softmax rule with a time-resolved process.</li>
+      <li><span class="m-label">Alternatives tested and rejected</span> A nonlinear linking function,
+        a decaying decision boundary, and perseveration expressed as a boundary adjustment were all
+        implemented; none improved recovery or fit, so the simpler linear link was retained.</li>
+    </ul>
+
+    <h3>Estimation</h3>
+    <ul class="method-list">
+      <li><span class="m-label">Framework</span> Bayesian, seven parameters estimated per participant
+        &mdash; four reinforcement learning (<code>A_ev</code>, <code>A_ef</code>, <code>K&prime;</code>,
+        <code>&beta;<sub>P</sub></code>) and three sequential sampling (<code>b</code>,
+        <code>&tau;_rel</code>, <code>v_s</code>).</li>
+      <li><span class="m-label">Likelihood</span> The joint density of choice and response time was
+        derived and implemented directly, rather than fitting choice and RT separately.</li>
+      <li><span class="m-label">Sampler</span> Hamiltonian Monte Carlo (NUTS) in Stan; three chains
+        &times; 2,000 iterations with 1,000 warm-up, giving 3,000 post-warm-up draws, no thinning.</li>
+      <li><span class="m-label">Reparameterization</span> Non-decision time is estimated as a relative
+        quantity <code>&tau;_rel &isin; (0,1)</code> and transformed as
+        <code>&tau; = min(RT) &times; &tau;_rel</code>, which enforces the constraint
+        <code>0 &lt; &tau; &lt; min(RT)</code> automatically instead of by rejection.</li>
+      <li><span class="m-label">Priors</span> Weakly informative: uniform on the bounded learning and
+        decay parameters, <code>Normal(0,1)</code> on <code>&beta;<sub>P</sub></code>,
+        <code>Normal(2,1)</code> on <code>b</code>, <code>Normal(0.5,1)</code> on <code>v_s</code>.</li>
+      <li><span class="m-label">Convergence</span> Gelman&ndash;Rubin <code>R&#770; &lt; 1.1</code> for
+        every parameter of every participant, with trace-plot inspection.</li>
+    </ul>
+
+    <h3>Validation design</h3>
+    <p>
+      The paper deliberately does <em>not</em> rest its case on an information criterion. Model
+      comparison by WAIC, LOO, DIC or BIC tells you which model wins a relative contest; it does not
+      tell you whether any of them describes the data or whether their parameters mean anything. The
+      validation is therefore built on two things that do.
+    </p>
+    <ul class="method-list">
+      <li><span class="m-label">Posterior predictive checking &mdash; absolute fit</span> Parameter
+        sets drawn from across the entire posterior are used to re-run the whole experiment
+        generatively: the simulated participant starts with initial values, chooses, receives
+        feedback from the real payoff scheme, updates, and iterates through all 100 trials. Three
+        criteria are checked &mdash; card-wise choice trajectories, win-stay/lose-shift transitions,
+        and RT distributions at the .1/.3/.5/.7/.9 quantiles, evaluated subject-wise, card-wise, and
+        action-wise.</li>
+      <li><span class="m-label">Parameter recovery</span> Individual posterior means from the
+        empirical fit were used as true generating values, so the synthetic data sit in a
+        psychologically plausible region of parameter space; 20 synthetic participants &times; 100
+        trials were simulated and the model refit with an identical procedure. Recovery is reported
+        as per-individual scatter against the identity line with &plusmn;1 SD posterior error bars
+        &mdash; the reporting practice whose absence was criticized in prior work &mdash; and
+        summarized by Spearman rank correlation, which indexes whether the model preserves the
+        ordering of people on each parameter.</li>
+      <li><span class="m-label">Benchmarks</span> ORL and PVL-Delta were fit to the same data and put
+        through the same posterior predictive checks and the same recovery pipeline.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Results</h2>
+
+    <figure class="research-figure">
+      <img src="assets/research/rlssm-choice.png" alt="Four panels showing choice proportion for each deck across trials: empirical data, the IGT-RL-SSM, ORL, and PVL-Delta. The IGT-RL-SSM reproduces the empirical ordering of deck preferences; the two benchmark models over-predict the frequent-win deck B.">
+      <figcaption><span class="fig-label">Figure 2.</span> Card-wise choice trajectories, data
+        against three models. The joint model was the only one to reproduce the empirical preference
+        ordering D &gt; C &gt; B &gt; A; both benchmarks over-predict the frequent-win deck B and
+        return D &gt; B &gt; C &gt; A.</figcaption>
+    </figure>
+
+    <figure class="research-figure">
+      <img src="assets/research/rlssm-rt-ppc.png" alt="Panel a: empirical response time histogram overlaid with the model-predicted density, reproducing the positive skew. Panel b: observed versus simulated response time quantiles at subject-wise, card-wise, and action-wise aggregation, all falling close to the identity line.">
+      <figcaption><span class="fig-label">Figure 3.</span> Response time posterior predictive checks
+        &mdash; a dimension entirely outside the explanatory scope of the choice-only benchmarks. The
+        predicted density reproduces the characteristic positive skew, and quantile agreement is high
+        at every level of aggregation (subject-wise <em>r</em> = .963, card-wise .984, action-wise
+        .989).</figcaption>
+    </figure>
+
+    <figure class="research-figure">
+      <img src="assets/research/rlssm-recovery.png" alt="Parameter recovery scatter plots for three models. Panel a, the IGT-RL-SSM, shows seven parameters recovering tightly along the identity line with Spearman correlations from .824 to .964. Panel b, ORL, shows substantially more dispersion, with the perseveration decay and learning rates recovering weakly. Panel c, PVL-Delta, recovers well across its four parameters.">
+      <figcaption><span class="fig-label">Figure 4.</span> Parameter recovery, per individual, with
+        &plusmn;1 SD posterior error bars and the identity line. <strong>(a)</strong> The joint model
+        recovers all seven parameters, Spearman <em>r</em> = .824&ndash;.964. <strong>(b)</strong> ORL
+        does not: the perseveration decay rate reaches only <em>r</em> = .663 and its two learning
+        rates .651 and .576 &mdash; the offsetting-components problem, made visible.
+        <strong>(c)</strong> PVL-Delta recovers well (<em>r</em> = .713&ndash;.973), as its simpler
+        structure would predict.</figcaption>
+    </figure>
+
+    <p>
+      Three findings follow. The joint model is the only one of the three that reproduces the
+      empirical ordering of deck preferences. It accounts for the full response time distribution,
+      which the benchmarks cannot address at all. And its worst-recovering parameter still beats the
+      worst-recovering parameter of published joint choice&ndash;RT models in the literature
+      (<em>r</em> = .78 and .74 in Miletić et al., 2021; a lowest <em>r</em> = .78 across eight
+      parameters in McDougle &amp; Collins, 2021). Taken together, the model matches or beats
+      choice-only benchmarks on their own ground, adds a channel they cannot explain, and returns
+      person-level estimates reliable enough to carry individual-difference claims.
+    </p>
+  </section>
+
+  <section>
+    <h2>Limitations and next steps</h2>
+    <ul class="plain-list">
+      <li>Empirical validation rests on a small, demographically narrow sample of 20 older adults;
+        larger, more diverse, and clinical cohorts are the obvious next test.</li>
+      <li>The value-to-drift link is linear. Nonlinear links have been proposed to address
+        choice-accuracy misfits, but the nonlinear variant tested here recovered worse.</li>
+      <li>Only the drift rate is made learning-dependent; boundary and starting-point dynamics were
+        explored and degraded recovery.</li>
+      <li>The concurrently collected fNIRS data open a direct path to model-based cognitive
+        neuroscience &mdash; in particular the factor-analytic linking function used in
+        <a href="research-jointmodel.html">my joint modeling project</a>, which would tie value
+        updating, response caution, and non-decision processes to specific neural signals.</li>
+    </ul>
+  </section>
+
+  <div class="page-nav">
+    <a href="research.html">&larr; All research</a>
+    <a href="research-jointmodel.html">Joint behavioral&ndash;neural modeling &rarr;</a>
+  </div>
+
+</main>
+
+<footer>
+  <p>&copy; 2026 Eunwoo Kim &middot; Built with GitHub Pages</p>
+</footer>
+
+</body>
+</html>

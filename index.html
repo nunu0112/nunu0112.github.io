@@ -4,10 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Eunwoo Kim</title>
+<meta name="description" content="Eunwoo Kim — postgraduate researcher in quantitative psychology at Yonsei University. Cognitive modeling, joint behavioral–neural modeling, and interpretable machine learning.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=5">
+<link rel="stylesheet" href="style.css?v=10">
 </head>
 <body>
 
@@ -17,6 +18,8 @@
     <nav>
       <a href="index.html" class="active">About</a>
       <a href="research.html">Research</a>
+      <a href="experience.html">Experience</a>
+      <a href="skills.html">Skills</a>
       <a href="contact.html">Contact</a>
     </nav>
   </div>
@@ -26,6 +29,10 @@
   <div class="hero-inner">
     <h1>Eunwoo Kim <span class="pronouns">(she/her)</span></h1>
     <p class="tagline">Postgraduate Researcher &middot; Department of Psychology, Yonsei University</p>
+    <p class="tagline-sub">
+      <a href="https://sites.google.com/view/qpsy" target="_blank" rel="noopener">Psychometric &amp; Computational Modeling Lab</a>
+      &middot; PI: Inhan Kang
+    </p>
 
     <ul class="icon-links">
       <li>
@@ -34,12 +41,12 @@
         </a>
       </li>
       <li>
-        <a href="https://github.com/nunu0112" target="_blank" title="GitHub" aria-label="GitHub">
+        <a href="https://github.com/nunu0112" target="_blank" rel="noopener" title="GitHub" aria-label="GitHub">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.98 5.24.98 11.52c0 5.02 3.26 9.28 7.78 10.78.57.1.78-.25.78-.55 0-.27-.01-1.16-.02-2.1-3.16.69-3.83-1.34-3.83-1.34-.52-1.31-1.26-1.66-1.26-1.66-1.03-.7.08-.69.08-.69 1.14.08 1.74 1.17 1.74 1.17 1.01 1.73 2.65 1.23 3.3.94.1-.73.4-1.23.72-1.51-2.52-.29-5.17-1.26-5.17-5.6 0-1.24.44-2.25 1.17-3.04-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.16.91-.25 1.89-.38 2.86-.39.97 0 1.95.13 2.86.39 2.18-1.47 3.14-1.16 3.14-1.16.63 1.58.23 2.75.12 3.04.73.79 1.16 1.8 1.16 3.04 0 4.35-2.65 5.31-5.18 5.59.41.35.77 1.04.77 2.1 0 1.52-.01 2.74-.01 3.11 0 .3.2.66.79.55A11.53 11.53 0 0 0 23 11.52C23 5.24 18.27.5 12 .5Z"/></svg>
         </a>
       </li>
       <li>
-        <a href="assets/CV_Eunwoo_Kim.pdf" target="_blank" title="Download CV" aria-label="Download CV">
+        <a href="assets/CV_Eunwoo_Kim.pdf" target="_blank" rel="noopener" title="Curriculum Vitae (PDF)" aria-label="Curriculum Vitae (PDF)">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 15h6M9 11h6M9 19h4"/></svg>
         </a>
       </li>
@@ -51,43 +58,117 @@
 
   <section id="about">
     <h2>About</h2>
-    <p>
-      I am a postgraduate researcher at the Psychometric &amp; Computational Modeling Lab (PI:
-      Inhan Kang), Department of Psychology, Yonsei University. I hold an M.S. in Psychology from
-      Yonsei University, a B.A. in Psychology, and a B.S. in Computer Science and Engineering from
-      Seoul National University.
+    <p class="lead">
+      I build and validate formal models of the processes that generate psychological data. My
+      work sits at the intersection of cognitive modeling, model-based cognitive neuroscience,
+      and interpretable machine learning &mdash; chosen in each case by the mechanism I am trying
+      to recover, not by allegiance to a single toolkit.
     </p>
     <p>
-      My research aims to quantify and interpret the underlying processes that give rise to
-      psychological phenomena. I work broadly across computational modeling (reinforcement
-      learning, sequential sampling models), joint behavioral&ndash;neural modeling, and machine
-      learning, selecting methods based on the mechanisms I am trying to uncover in a given
-      psychological process. I am particularly interested in integrating behavioral data with
-      neural data to build more complete, mechanistically grounded accounts of cognition and
-      behavior. More broadly, I am motivated by the question of how psychological science itself
-      can be made more rigorous and cumulative, particularly through advances in model validation
-      and interpretable methods.
+      Three commitments run through my projects. First, <strong>a model should explain more than
+      one channel of data at a time</strong>: choices and response times arise from the same
+      decision process, and neural activity is informative about that process rather than a
+      separate outcome to be correlated with it afterwards. Second, <strong>individual-level
+      estimates are only useful if they can be trusted</strong>, which makes parameter recovery,
+      posterior predictive checking, and honest model comparison part of the contribution rather
+      than an appendix. Third, <strong>flexibility and interpretability are not opposed</strong>:
+      where the structure of a problem is unknown, flexible learners paired with principled
+      attribution methods can reveal it.
     </p>
+    <p>
+      Concretely, I have joined reinforcement learning with sequential sampling models so that a
+      single mechanism accounts for what people choose and how long they take; extended a
+      factor-analytic neural diffusion decision model so that single-trial brain responses and
+      decision parameters are estimated together; and used tree-based ensembles with Shapley
+      attribution and causal forests to study questions where the relevant structure is nonlinear
+      and heterogeneous. I work primarily in Stan, R, and Python, with formal training in computer
+      science supporting the implementation side of this work.
+    </p>
+    <div class="link-row">
+      <a class="btn-link" href="research.html">Research projects &rarr;</a>
+      <a class="btn-link" href="skills.html">Methods &amp; tools &rarr;</a>
+      <a class="btn-link" href="assets/CV_Eunwoo_Kim.pdf" target="_blank" rel="noopener">Curriculum Vitae (PDF)</a>
+    </div>
+  </section>
+
+  <section id="education">
+    <h2>Education</h2>
     <div class="timeline">
       <div class="timeline-item">
         <span class="timeline-date">2026&ndash;Present</span>
-        <span class="timeline-text">Postgraduate Researcher, Psychometric &amp; Computational Modeling Lab (PI: Inhan Kang), Yonsei University</span>
+        <span class="timeline-text">
+          <span class="timeline-role">Postgraduate Researcher</span>
+          <span class="timeline-meta">
+            <a href="https://sites.google.com/view/qpsy" target="_blank" rel="noopener">Psychometric &amp; Computational Modeling Lab</a>,
+            <a href="https://www.usnews.com/education/best-global-universities/yonsei-university-503801" target="_blank" rel="noopener">Yonsei University</a>
+            &middot; PI: Inhan Kang
+          </span>
+        </span>
       </div>
       <div class="timeline-item">
         <span class="timeline-date">2024&ndash;2026</span>
-        <span class="timeline-text">M.S. in Psychology (Quantitative Psychology; PI: Inhan Kang), Yonsei University</span>
+        <span class="timeline-text">
+          <span class="timeline-role">M.S. in Psychology (Quantitative Psychology)</span>
+          <span class="timeline-meta">
+            <a href="https://www.usnews.com/education/best-global-universities/yonsei-university-503801" target="_blank" rel="noopener">Yonsei University</a>
+            &middot; Advisor: Inhan Kang
+          </span>
+          <span class="timeline-thesis">
+            <strong>Thesis:</strong> Development and Validation of a Reinforcement Learning
+            Sequential Sampling Model for Addictive Behavior
+            &middot; <a href="research-rlssm.html">project page</a>
+          </span>
+        </span>
+      </div>
+      <div class="timeline-item">
+        <span class="timeline-date">2018&ndash;2024</span>
+        <span class="timeline-text">
+          <span class="timeline-role">B.A. in Psychology &amp; B.S. in Computer Science and Engineering</span>
+          <span class="timeline-meta">
+            <a href="https://www.usnews.com/education/best-global-universities/seoul-national-university-503456" target="_blank" rel="noopener">Seoul National University</a>
+            &middot; Summa Cum Laude, Department of Psychology
+          </span>
+          <span class="timeline-thesis">
+            <strong>Psychology thesis:</strong> Causal Inference on COVID-19-Related Events and
+            Well-Being Using Causal Forests
+            &middot; <a href="research-grf.html">project page</a><br>
+            <strong>Computer science thesis:</strong> Application of Basic Prompting Techniques in Korean
+          </span>
+        </span>
+      </div>
+    </div>
+    <p class="code-caption">
+      University names link to their U.S. News Best Global Universities profiles.
+    </p>
+  </section>
+
+  <section id="honors">
+    <h2>Honors &amp; Awards</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <span class="timeline-date">2025</span>
+        <span class="timeline-text">
+          <span class="timeline-role">Future Psychologist Award</span>
+          <span class="timeline-meta">Korean Psychological Association</span>
+        </span>
       </div>
       <div class="timeline-item">
         <span class="timeline-date">2024</span>
-        <span class="timeline-text">B.A. in Psychology, Seoul National University <br>B.S. in Computer Science and Engineering, Seoul National University</span>
+        <span class="timeline-text">
+          <span class="timeline-role">Summa Cum Laude</span>
+          <span class="timeline-meta">Department of Psychology, Seoul National University</span>
+        </span>
       </div>
     </div>
+    <p class="code-caption">
+      Fellowships and grants are listed on the <a href="experience.html#fellowships">experience page</a>.
+    </p>
   </section>
 
 </main>
 
 <footer>
-  <p>&copy; 2026 Eunwoo Kim. Built with GitHub Pages.</p>
+  <p>&copy; 2026 Eunwoo Kim &middot; Built with GitHub Pages</p>
 </footer>
 
 </body>

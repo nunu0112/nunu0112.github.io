@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heterogeneous Treatment Effects of COVID-19 Events &middot; Eunwoo Kim</title>
+<meta name="description" content="Generalized random forests applied to COVID-19 events and well-being: orthogonalization, cross-fitted CATE estimation, AIPW, and formal calibration testing.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=10">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">Eunwoo Kim</a>
+    <nav>
+      <a href="index.html">About</a>
+      <a href="research.html" class="active">Research</a>
+      <a href="experience.html">Experience</a>
+      <a href="skills.html">Skills</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="page-header">
+  <div class="page-header-inner">
+    <p class="breadcrumb"><a href="research.html">Research</a><span>/</span>Heterogeneous treatment effects</p>
+    <h1>Heterogeneous Treatment Effects of COVID-19 Events on Well-Being</h1>
+    <p class="page-sub">
+      A published finding about who suffered most under social distancing, re-asked inside a
+      potential-outcomes framework with causal forests &mdash; so that the data, not the analyst,
+      locate the heterogeneity.
+    </p>
+  </div>
+</header>
+
+<main class="wide">
+
+  <div class="study-meta">
+    <div><span class="meta-label">Author</span> Eunwoo Kim</div>
+    <div><span class="meta-label">Type</span> B.A. thesis, Seoul National University</div>
+    <div><span class="meta-label">Advisor</span> Jiook Cha (Connectome Lab)</div>
+    <div><span class="meta-label">Data</span> N = 69,986</div>
+  </div>
+
+  <section>
+    <h2>Background</h2>
+    <p>
+      Choi et al. (2022) tracked well-being in South Korea through the early pandemic and reported
+      that extraverts declined more than introverts after social distancing was implemented &mdash; an
+      extraversion &times; distancing interaction, estimated with polynomial regression and
+      mixed-effects models. It is a good study, and its design has three properties I wanted to
+      change.
+    </p>
+    <ul class="method-list">
+      <li><span class="m-label">A constant effect is assumed</span> Multilevel models estimate one
+        treatment effect shared by everyone; any subgroup structure has to be hypothesized in advance
+        and entered as an interaction term. If the moderator is something the analyst did not think
+        of, the design cannot find it.</li>
+      <li><span class="m-label">Functional form is committed to in advance</span> Nonlinear effects
+        and higher-order interactions among many covariates are not representable without specifying
+        them.</li>
+      <li><span class="m-label">The estimand is associational</span> The substantive claim is causal
+        in spirit but the model is descriptive. I wanted the same questions asked with an explicit
+        causal estimand.</li>
+    </ul>
+    <p>
+      Generalized random forests (Athey, Tibshirani &amp; Wager, 2019) address all three. The
+      estimand becomes the <strong>conditional</strong> average treatment effect &tau;(x), a
+      <em>function</em> of covariates rather than a constant, and the trees are grown to maximize
+      heterogeneity between subgroups rather than to minimize prediction error &mdash; so subgroup
+      structure is discovered rather than pre-specified.
+    </p>
+  </section>
+
+  <section>
+    <h2>Methods</h2>
+
+    <h3>Data and treatment definitions</h3>
+    <ul class="method-list">
+      <li><span class="m-label">Data</span> Secondary analysis of the longitudinal survey from Choi
+        et al. (2022), publicly archived on OSF and collected in collaboration with the Center for
+        Happiness Studies at Seoul National University: <strong>69,986 participants</strong>,
+        130,798 observations, January 1 &ndash; April 7, 2020.</li>
+      <li><span class="m-label">Outcomes</span> Satisfaction with life, positive affect, negative
+        affect, meaning in life, stress, and a composite well-being index, each on an 11-point scale.</li>
+      <li><span class="m-label">Two separate causal contrasts</span> The study window splits into
+        three phases, giving one treatment for the <em>outbreak</em> (phase 1 &rarr; 2) and a separate
+        treatment for the <em>implementation of social distancing</em> (phase 2 &rarr; 3). Each is
+        fitted in its own set of forests rather than being folded into a single time variable.</li>
+      <li><span class="m-label">Moderator of interest</span> Extraversion, 24 NEO-PI-R items, entered
+        as a composite <em>and</em> as its three facets (sociability, assertiveness, energy) so the
+        analysis could identify which facet drives any heterogeneity, not merely whether extraversion
+        does.</li>
+      <li><span class="m-label">Repeated measures</span> Causal forests do not natively handle
+        repeated responses, so observations were averaged within participant within phase &mdash;
+        following Athey &amp; Wager's treatment of unequally sized clusters &mdash; and subject ID was
+        additionally entered as a covariate to absorb individual-level confounding.</li>
+    </ul>
+
+    <h3>The estimator</h3>
+    <figure class="research-figure">
+      <img src="assets/research/grf-estimator.png" alt="Three stacked equations: the Robinson residual-on-residual orthogonalization; the locally weighted cross-fitted estimator of the conditional average treatment effect using forest adaptive-neighborhood weights; and the AIPW doubly robust estimator of the average treatment effect.">
+      <figcaption><span class="fig-label">Figure 1.</span> The three steps of estimation. Confounding
+        is handled non-parametrically through the nuisance functions rather than by a fixed adjustment
+        set; the neighborhood over which the effect is estimated is learned by the forest instead of
+        being specified; and the average effect is summarized doubly robustly rather than by
+        averaging the fitted CATEs.</figcaption>
+    </figure>
+
+    <h3>Inference and interpretation &mdash; a gated procedure</h3>
+    <p>
+      Heterogeneous-effect estimates are easy to over-read: a forest will always return a distribution
+      of &tau;&#770;(x), whether or not real heterogeneity exists. The analysis was therefore gated
+      behind a formal test at each stage.
+    </p>
+    <ul class="method-list">
+      <li><span class="m-label">Calibration test first</span> <code>test_calibration()</code>
+        regresses the doubly robust scores on the mean and differenced forest predictions, returning
+        one coefficient for the average effect and one for heterogeneity.</li>
+      <li><span class="m-label">The gate</span> Heterogeneity was tested only where the average
+        effect was calibrated, and the heterogeneity-interpretation tools were applied only where
+        the heterogeneity coefficient was significant. Several models stopped at the first gate, and
+        that is reported rather than worked around.</li>
+      <li><span class="m-label">Three triangulating interpretations</span> Variable importance
+        (depth-weighted split frequency, which indexes contribution to heterogeneity because splits
+        maximize it); best linear projection of the CATE onto the covariates; and a comparison of
+        covariate means between the high- and low-CATE halves of the sample. Each alone is
+        insufficient &mdash; in particular, a null best-linear-projection result does not license the
+        conclusion that a variable is irrelevant, since it only detects linear structure.</li>
+      <li><span class="m-label">Software</span> R, the <code>grf</code> package.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Results</h2>
+
+    <h3>Social distancing: a broad, uniform effect</h3>
+    <figure class="research-figure">
+      <img src="assets/research/grf-ate.png" alt="Lollipop chart of AIPW average treatment effects of social distancing on six well-being outcomes. Negative affect increases by 0.210 and stress by 0.099; satisfaction with life falls by 0.146, meaning in life by 0.178, positive affect by 0.181, and the composite well-being index by 0.183.">
+      <figcaption><span class="fig-label">Figure 2.</span> AIPW average treatment effects of the
+        implementation of social distancing, all <em>p</em> &lt; .001. Every well-being measure moved
+        in the harmful direction. Crucially, <strong>none</strong> of these models showed significant
+        heterogeneity &mdash; the effect was broad and roughly uniform, so no subgroup interpretation
+        was run.</figcaption>
+    </figure>
+
+    <h3>The outbreak: smaller, and genuinely heterogeneous</h3>
+    <p>
+      Only three outcome models passed the average-effect gate for the outbreak contrast. Satisfaction
+      with life <em>increased</em> slightly (+0.053, <em>p</em> = .006) and meaning in life decreased
+      (&minus;0.071, <em>p</em> = .001). Both then showed significant heterogeneity
+      (<em>p</em> &lt; .001), so the interpretation tools were applied to those two.
+    </p>
+
+    <figure class="research-figure">
+      <img src="assets/research/grf-varimp.png" alt="Grouped horizontal bar chart of variable importance for the two outbreak models. Subject ID and age rank highest, followed by the four extraversion measures — energy, composite, sociability, assertiveness — with sex and region of residence lowest.">
+      <figcaption><span class="fig-label">Figure 3.</span> Variable importance in the two outbreak
+        models that showed real heterogeneity. Every extraversion measure exceeded .10 in both models,
+        and the facet ordering was consistent across them: energy &gt; sociability &gt; assertiveness.
+        Subject ID, age, sex, and region were nuisance controls.</figcaption>
+    </figure>
+
+    <p>
+      The three interpretation methods did not fully agree, which is itself the useful finding.
+      Variable importance placed all four extraversion measures above sex and region; the median-split
+      comparison found extraversion reliably higher in the high-CATE group; but the best linear
+      projection found only age and sex significant. Since the projection detects only linear
+      relations between a covariate and the CATE, the reasonable reading is that extraversion
+      contributes to heterogeneity in a way that is not linear &mdash; not that it fails to contribute.
+    </p>
+
+    <h3>What replicated, and what did not</h3>
+    <ul class="plain-list">
+      <li><strong>Replicated:</strong> the negative effect of the outbreak on meaning in life, and the
+        broad, uniformly harmful effect of social distancing across all well-being indicators.</li>
+      <li><strong>Diverged:</strong> the outbreak <em>increased</em> satisfaction with life here,
+        opposite to the original report &mdash; consistent with the original only reporting a slight
+        decline in the composite index, where conflicting subscore effects can net out.</li>
+      <li><strong>Diverged in both directions on extraversion:</strong> the original found no
+        outbreak &times; extraversion interaction but a significant distancing &times; extraversion
+        interaction. This analysis found the reverse &mdash; heterogeneity in the outbreak effect,
+        none in the distancing effect.</li>
+    </ul>
+    <div class="callout">
+      <strong>The limitation I would raise first.</strong> Because the same individuals appear before
+      and after each event, this is a before/after comparison rather than a clean counterfactual
+      contrast, and entering subject ID as a covariate does not fully exploit what a causal forest
+      can do. A stronger design would compare regions or groups differentially exposed to the same
+      event. I flagged this in the thesis rather than leaving it implicit, because it bounds how
+      causally the estimates should be read.
+    </div>
+  </section>
+
+  <div class="page-nav">
+    <a href="research-fertility.html">&larr; Interpretable ML for dyadic data</a>
+    <a href="research.html">All research &rarr;</a>
+  </div>
+
+</main>
+
+<footer>
+  <p>&copy; 2026 Eunwoo Kim &middot; Built with GitHub Pages</p>
+</footer>
+
+</body>
+</html>
