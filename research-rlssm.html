@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=10">
+<link rel="stylesheet" href="style.css?v=11">
 </head>
 <body>
 
@@ -31,8 +31,8 @@
     <h1>Modeling Choice and Response Time in Value-Based Decision-Making</h1>
     <p class="page-sub">
       A reinforcement learning sequential sampling model for the Iowa Gambling Task, built so that
-      one mechanism explains what people choose and how long they take &mdash; and validated to the
-      point where individual parameter estimates can be used as measurements.
+      choices and response times are accounted for by a single mechanism, with attention to how
+      well the resulting individual-level parameters are recovered.
     </p>
   </div>
 </header>
@@ -44,6 +44,32 @@
     <div><span class="meta-label">Status</span> Under review, <em>Psychonomic Bulletin &amp; Review</em></div>
     <div><span class="meta-label">Role</span> First author; M.S. thesis</div>
   </div>
+
+  <section class="abstract">
+    <h2>Abstract</h2>
+    <p>
+      Behavioral addiction is characterized by a persistent preference for immediate rewards over
+      long-term outcomes, reflecting a breakdown in value-based decision-making. To elucidate the
+      mechanism underlying this maladaptive pattern, researchers have applied reinforcement
+      learning (RL) models to the Iowa Gambling Task (IGT). However, two limitations remain. First,
+      parameter recovery has received limited scrutiny, raising concerns about the reliability of
+      individual-level estimates. Second, these models rely solely on choice data and ignore other
+      informative modalities such as response times (RTs), although RTs can be collected easily and
+      provide distinct information from choice. To address these limitations, we integrated an RL
+      model for the IGT with an evidence-accumulation structure of sequential sampling models
+      (SSMs), resulting in a joint model of IGT choices and RTs. The RL component updates
+      subjective deck values based on trial-by-trial feedback, and the SSM component links these
+      values to within-trial decision dynamics. We validate the proposed model with two approaches.
+      First, a simulation study shows that all seven individual-level parameters are recovered
+      accurately. Second, absolute model fits to IGT data from 20 older adults demonstrate that the
+      model reproduces card-wise choice trajectories, win-stay/lose-shift patterns, and empirical
+      RT distributions. The results also show the joint model performs as well as or better than
+      several choice-only RL models for the IGT, in both simulation and empirical application.
+      Overall, our modeling approach provides a unified account of choice and RT in the IGT while
+      yielding reliable individual-level estimates for investigating value-based decision-making
+      processes.
+    </p>
+  </section>
 
   <section>
     <h2>Background</h2>
@@ -241,22 +267,22 @@
       <img src="assets/research/rlssm-recovery.png" alt="Parameter recovery scatter plots for three models. Panel a, the IGT-RL-SSM, shows seven parameters recovering tightly along the identity line with Spearman correlations from .824 to .964. Panel b, ORL, shows substantially more dispersion, with the perseveration decay and learning rates recovering weakly. Panel c, PVL-Delta, recovers well across its four parameters.">
       <figcaption><span class="fig-label">Figure 4.</span> Parameter recovery, per individual, with
         &plusmn;1 SD posterior error bars and the identity line. <strong>(a)</strong> The joint model
-        recovers all seven parameters, Spearman <em>r</em> = .824&ndash;.964. <strong>(b)</strong> ORL
-        does not: the perseveration decay rate reaches only <em>r</em> = .663 and its two learning
-        rates .651 and .576 &mdash; the offsetting-components problem, made visible.
-        <strong>(c)</strong> PVL-Delta recovers well (<em>r</em> = .713&ndash;.973), as its simpler
-        structure would predict.</figcaption>
+        recovered all seven parameters accurately, Spearman <em>r</em> = .824&ndash;.964.
+        <strong>(b)</strong> ORL recovered less well: the perseveration decay rate reached
+        <em>r</em> = .663 and its two learning rates .651 and .576, consistent with the
+        offsetting-components problem described above. <strong>(c)</strong> PVL-Delta recovered well
+        (<em>r</em> = .713&ndash;.973), as its simpler structure would suggest.</figcaption>
     </figure>
 
     <p>
-      Three findings follow. The joint model is the only one of the three that reproduces the
-      empirical ordering of deck preferences. It accounts for the full response time distribution,
-      which the benchmarks cannot address at all. And its worst-recovering parameter still beats the
-      worst-recovering parameter of published joint choice&ndash;RT models in the literature
-      (<em>r</em> = .78 and .74 in Miletić et al., 2021; a lowest <em>r</em> = .78 across eight
-      parameters in McDougle &amp; Collins, 2021). Taken together, the model matches or beats
-      choice-only benchmarks on their own ground, adds a channel they cannot explain, and returns
-      person-level estimates reliable enough to carry individual-difference claims.
+      Three points follow. The joint model was the only one of the three to reproduce the empirical
+      ordering of deck preferences. It accounts for the full response time distribution, which the
+      choice-only benchmarks do not address. And its weakest-recovering parameter is comparable to
+      the weakest reported for published joint choice&ndash;RT models (<em>r</em> = .78 and .74 in
+      Miletić et al., 2021; a lowest <em>r</em> = .78 across eight parameters in McDougle &amp;
+      Collins, 2021). Taken together, the model performed as well as or better than the choice-only
+      benchmarks, additionally accounts for response time, and recovered individual-level estimates
+      accurately in simulation.
     </p>
   </section>
 

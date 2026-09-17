@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=10">
+<link rel="stylesheet" href="style.css?v=11">
 </head>
 <body>
 
@@ -45,6 +45,32 @@
     <div><span class="meta-label">Role</span> Co-first author; modeling and estimation</div>
     <div><span class="meta-label">Presented</span> CBrain 2026, poster</div>
   </div>
+
+  <section class="abstract">
+    <h2>Abstract</h2>
+    <p>
+      Most previous applications of computational modeling to neuroscience first estimate cognitive
+      model components and then relate them to measured neural activity. This two-step analysis has
+      two limitations: uncertainty in the cognitive parameter estimates is not propagated to
+      subsequent analyses, and neural data cannot inform estimation of the cognitive structure. The
+      joint modeling framework in model-based cognitive neuroscience (MBCN; Turner et al., 2017)
+      instead simultaneously estimates submodels for behavioral and neural data, as well as a
+      linking function between their parameters. This approach allows the two modalities to
+      constrain each other and treat associations between cognitive components and brain regions as
+      quantities estimated within the same model rather than as post-hoc correlations. We
+      demonstrate this framework with the fMRI word recognition data of Han et al. (2010), in which
+      reward contingencies for recognition judgments were manipulated. The diffusion decision model
+      (DDM) accounts for behavior, decomposing choices and response times into trial-wise
+      information-processing rates and other cognitive components. The neural side uses single-trial
+      beta estimates from regions of interest (ROIs) defined by the AAL3 atlas. A factor-analytic
+      structure with Lasso regularization links the two sets of parameters and yields coefficients
+      representing relationships between cognitive components and ROIs. For illustrative purposes,
+      we apply this model to single-participant data with multiple experimental conditions and
+      explore patterns of single-trial DDM parameters and their associations with ROIs across
+      conditions. This application demonstrates how the framework jointly addresses the multimodal
+      nature of data and brain-behavior connections within a unified model.
+    </p>
+  </section>
 
   <section>
     <h2>Background</h2>

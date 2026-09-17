@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=10">
+<link rel="stylesheet" href="style.css?v=11">
 </head>
 <body>
 
@@ -45,6 +45,28 @@
     <div><span class="meta-label">Advisor</span> Jiook Cha (Connectome Lab)</div>
     <div><span class="meta-label">Data</span> N = 69,986</div>
   </div>
+
+  <section class="abstract">
+    <h2>Abstract</h2>
+    <p>
+      The COVID-19 pandemic has significantly impacted various facets of human life, including
+      psychological well-being. This study replicates and extends the study by Choi et al. (2022)
+      using the Generalized Random Forest (GRF) method to analyze the causal effects of
+      COVID-19-related events on well-being. Utilizing longitudinal data (<em>N</em> = 69,986) from
+      an online survey conducted in South Korea during the early pandemic (January 1 &ndash; April 7,
+      2020), this study investigates the treatment effect of COVID-19-related events on well-being.
+      The GRF method, which integrates machine learning techniques for estimating both average
+      treatment effects and heterogeneous treatment effects, is employed to provide a nuanced
+      understanding of these impacts. The findings reveal that the COVID-19 outbreak and the
+      implementation of social distancing significantly affected well-being. The outbreak was
+      associated with increased satisfaction with life (SWL) and decreased meaning in life (MIL).
+      The models also identified significant heterogeneity in treatment effects, with moderate
+      evidence that extraversion has contribution to this heterogeneity. Social distancing, on the
+      other hand, led to increased negative affect and stress, and decreased SWL, positive affect,
+      and MIL. By leveraging the capabilities of GRF, this study offers comprehensive insights into
+      the complex interplay between pandemic-related events and individual psychological responses.
+    </p>
+  </section>
 
   <section>
     <h2>Background</h2>
@@ -101,10 +123,30 @@
         additionally entered as a covariate to absorb individual-level confounding.</li>
     </ul>
 
+    <h3>How a forest locates the comparison group</h3>
+    <p>
+      The step that makes this work is easy to state and easy to miss. A causal forest does not
+      estimate one effect and then slice it; it estimates the effect <em>at a point</em> in
+      covariate space, and it has to decide which other observations are similar enough to that
+      point to inform the estimate. Rather than fixing a neighborhood in advance, it lets the trees
+      define one: each tree contributes a weight to every observation according to how often that
+      observation lands in the same terminal leaf as the target point. Because the trees are split
+      to maximize heterogeneity in the effect, the resulting neighborhood is adapted to the question
+      being asked.
+    </p>
+    <figure class="research-figure">
+      <img src="assets/research/grf-neighborhood.png" alt="Three partitioned squares, each showing a different tree's terminal nodes with a target point marked by a cross and the training points in the same leaf drawn larger; below, a single square combines them, showing how often each training point shared a leaf with the target.">
+      <figcaption><span class="fig-label">Figure 1.</span> The random forest weighting function.
+        Each tree gives positive weight to the training examples sharing a leaf with the target
+        point and zero to the rest; averaging over trees measures how often each example falls in
+        the same leaf, which becomes the adaptive neighborhood used to estimate the effect there.
+        Figure reproduced from Athey &amp; Wager (2019).</figcaption>
+    </figure>
+
     <h3>The estimator</h3>
     <figure class="research-figure">
       <img src="assets/research/grf-estimator.png" alt="Three stacked equations: the Robinson residual-on-residual orthogonalization; the locally weighted cross-fitted estimator of the conditional average treatment effect using forest adaptive-neighborhood weights; and the AIPW doubly robust estimator of the average treatment effect.">
-      <figcaption><span class="fig-label">Figure 1.</span> The three steps of estimation. Confounding
+      <figcaption><span class="fig-label">Figure 2.</span> The three steps of estimation. Confounding
         is handled non-parametrically through the nuisance functions rather than by a fixed adjustment
         set; the neighborhood over which the effect is estimated is learned by the forest instead of
         being specified; and the average effect is summarized doubly robustly rather than by
@@ -141,7 +183,7 @@
     <h3>Social distancing: a broad, uniform effect</h3>
     <figure class="research-figure">
       <img src="assets/research/grf-ate.png" alt="Lollipop chart of AIPW average treatment effects of social distancing on six well-being outcomes. Negative affect increases by 0.210 and stress by 0.099; satisfaction with life falls by 0.146, meaning in life by 0.178, positive affect by 0.181, and the composite well-being index by 0.183.">
-      <figcaption><span class="fig-label">Figure 2.</span> AIPW average treatment effects of the
+      <figcaption><span class="fig-label">Figure 3.</span> AIPW average treatment effects of the
         implementation of social distancing, all <em>p</em> &lt; .001. Every well-being measure moved
         in the harmful direction. Crucially, <strong>none</strong> of these models showed significant
         heterogeneity &mdash; the effect was broad and roughly uniform, so no subgroup interpretation
@@ -158,7 +200,7 @@
 
     <figure class="research-figure">
       <img src="assets/research/grf-varimp.png" alt="Grouped horizontal bar chart of variable importance for the two outbreak models. Subject ID and age rank highest, followed by the four extraversion measures — energy, composite, sociability, assertiveness — with sex and region of residence lowest.">
-      <figcaption><span class="fig-label">Figure 3.</span> Variable importance in the two outbreak
+      <figcaption><span class="fig-label">Figure 4.</span> Variable importance in the two outbreak
         models that showed real heterogeneity. Every extraversion measure exceeded .10 in both models,
         and the facet ordering was consistent across them: energy &gt; sociability &gt; assertiveness.
         Subject ID, age, sex, and region were nuisance controls.</figcaption>

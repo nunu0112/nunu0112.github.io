@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=10">
+<link rel="stylesheet" href="style.css?v=11">
 </head>
 <body>
 
@@ -43,6 +43,22 @@
     <div><span class="meta-label">Status</span> Manuscript in preparation</div>
     <div><span class="meta-label">Role</span> Co-first author; full analysis pipeline</div>
   </div>
+
+  <section class="abstract">
+    <h2>Summary</h2>
+    <p>
+      Fertility desires within a couple reflect characteristics of both partners. This project
+      predicts them from dyadic survey data on 515 premarital couples using random forest models,
+      and then examines which variables drive the predictions. Because partners share
+      relationship-level information, cross-validation is grouped by couple so that both members of
+      a pair always fall in the same fold, and every data-dependent step &mdash; oversampling,
+      encoding, threshold selection, and the SHAP explainer itself &mdash; is fit inside the
+      training fold. Shapley additive explanation values computed on held-out cases quantify how
+      much each variable contributed to the predictions, and a couple-level cluster bootstrap tests
+      whether adding partner-reported predictors improves prediction beyond a person's own
+      characteristics. The manuscript is in preparation.
+    </p>
+  </section>
 
   <section>
     <h2>Background</h2>

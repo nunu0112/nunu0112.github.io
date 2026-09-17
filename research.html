@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=10">
+<link rel="stylesheet" href="style.css?v=11">
 </head>
 <body>
 
@@ -48,78 +48,97 @@
     </p>
 
     <a class="project-card" href="research-rlssm.html">
-      <div class="card-tags">
-        <span class="badge">Under review</span>
-        <span class="tag">Reinforcement learning</span>
-        <span class="tag">Racing diffusion</span>
-        <span class="tag">Stan / HMC</span>
-        <span class="tag">Parameter recovery</span>
+      <div class="card-thumb">
+        <img src="assets/research/rlssm-schematic.png" alt="Schematic of the reinforcement learning sequential sampling model.">
       </div>
-      <h3>Modeling Choice and Response Time in Value-Based Decision-Making</h3>
-      <p>
-        Reinforcement learning models of the Iowa Gambling Task use choices alone and recover
-        individual-level parameters poorly. I replaced the softmax choice rule with a racing
-        diffusion process, derived the joint likelihood of choice and response time, and
-        implemented it in Stan &mdash; then showed by simulation that all seven person-level
-        parameters recover accurately, where the standard benchmark model does not.
-      </p>
-      <span class="card-more">Background, model equations, estimation, and validation &rarr;</span>
+      <div class="card-body">
+        <div class="card-tags">
+          <span class="badge">Under review</span>
+          <span class="tag">Reinforcement learning</span>
+          <span class="tag">Racing diffusion</span>
+          <span class="tag">Stan / HMC</span>
+          <span class="tag">Parameter recovery</span>
+        </div>
+        <h3>Modeling Choice and Response Time in Value-Based Decision-Making</h3>
+        <p>
+          Reinforcement learning models of the Iowa Gambling Task use choice data alone, and the
+          recovery of their individual-level parameters has received limited scrutiny. I replaced
+          the softmax choice rule with a racing diffusion process, wrote the joint likelihood of
+          choice and response time in Stan, and examined how well the seven person-level
+          parameters are recovered.
+        </p>
+        <span class="card-more">Background, model equations, estimation, and validation &rarr;</span>
+      </div>
     </a>
 
     <a class="project-card" href="research-jointmodel.html">
-      <div class="card-tags">
-        <span class="badge">Analysis in progress</span>
-        <span class="tag">Diffusion decision model</span>
-        <span class="tag">fMRI</span>
-        <span class="tag">Factor analysis</span>
-        <span class="tag">Bayesian lasso</span>
+      <div class="card-thumb">
+        <img src="assets/research/joint-framework.png" alt="Schematic of the joint modeling framework linking a behavioral and a neural submodel.">
       </div>
-      <h3>Joint Modeling of Single-Trial Behavior and fMRI Activity</h3>
-      <p>
-        Model-based cognitive neuroscience usually estimates cognitive parameters first and
-        correlates them with brain activity afterwards, discarding uncertainty and letting
-        information flow only one way. I extended a lasso factor-analytic neural diffusion
-        decision model to a rewarded recognition-memory task so that single-trial decision
-        parameters and regional brain responses are estimated in one pass.
-      </p>
-      <span class="card-more">Framework, linking function, and estimation routine &rarr;</span>
+      <div class="card-body">
+        <div class="card-tags">
+          <span class="badge">Analysis in progress</span>
+          <span class="tag">Diffusion decision model</span>
+          <span class="tag">fMRI</span>
+          <span class="tag">Factor analysis</span>
+          <span class="tag">Bayesian lasso</span>
+        </div>
+        <h3>Joint Modeling of Single-Trial Behavior and fMRI Activity</h3>
+        <p>
+          Model-based cognitive neuroscience usually estimates cognitive parameters first and
+          relates them to brain activity afterwards, which discards parameter uncertainty and
+          prevents the neural data from informing the cognitive model. I extended a lasso
+          factor-analytic neural diffusion decision model to a rewarded recognition-memory task so
+          that both components are estimated together.
+        </p>
+        <span class="card-more">Framework, linking function, and estimation routine &rarr;</span>
+      </div>
     </a>
 
     <a class="project-card" href="research-fertility.html">
-      <div class="card-tags">
-        <span class="badge">In preparation</span>
-        <span class="tag">Random forests</span>
-        <span class="tag">SHAP</span>
-        <span class="tag">Dyadic data</span>
-        <span class="tag">Grouped cross-validation</span>
+      <div class="card-thumb">
+        <img src="assets/research/fert-actor-beeswarm.png" alt="SHAP beeswarm plot of the most influential predictors.">
       </div>
-      <h3>Interpretable Machine Learning for Dyadic Prediction</h3>
-      <p>
-        Fertility desires are negotiated by two people, which breaks the independence that
-        ordinary cross-validation assumes. I built a couple-grouped, leakage-controlled
-        prediction pipeline with out-of-fold SHAP attribution, and used it to ask whether knowing
-        someone's partner adds predictive information beyond knowing the person &mdash; a question
-        about redundancy that a regression coefficient cannot answer.
-      </p>
-      <span class="card-more">Design, leakage controls, and the incremental-validity test &rarr;</span>
+      <div class="card-body">
+        <div class="card-tags">
+          <span class="badge">In preparation</span>
+          <span class="tag">Random forests</span>
+          <span class="tag">SHAP</span>
+          <span class="tag">Dyadic data</span>
+          <span class="tag">Grouped cross-validation</span>
+        </div>
+        <h3>Interpretable Machine Learning for Dyadic Prediction</h3>
+        <p>
+          Fertility desires within a couple reflect characteristics of both partners, which breaks
+          the independence that ordinary cross-validation assumes. I built a couple-grouped,
+          leakage-controlled prediction pipeline with out-of-fold SHAP attribution, and used it to
+          ask how much a partner's characteristics add beyond a person's own.
+        </p>
+        <span class="card-more">Design, leakage controls, and the incremental-validity test &rarr;</span>
+      </div>
     </a>
 
     <a class="project-card" href="research-grf.html">
-      <div class="card-tags">
-        <span class="badge neutral">Undergraduate thesis</span>
-        <span class="tag">Causal forests</span>
-        <span class="tag">AIPW</span>
-        <span class="tag">Heterogeneous effects</span>
-        <span class="tag">R / grf</span>
+      <div class="card-thumb">
+        <img src="assets/research/grf-ate.png" alt="Chart of average treatment effects on six well-being outcomes.">
       </div>
-      <h3>Heterogeneous Treatment Effects of COVID-19 Events on Well-Being</h3>
-      <p>
-        A published study had asked whether extraverts suffered more under social distancing, using
-        interactions specified in advance. I re-asked the question inside a potential-outcomes
-        framework with generalized random forests, letting the data locate the heterogeneity, and
-        gated every interpretation behind a formal calibration test.
-      </p>
-      <span class="card-more">Estimator, identification, and what replicated &rarr;</span>
+      <div class="card-body">
+        <div class="card-tags">
+          <span class="badge neutral">Undergraduate thesis</span>
+          <span class="tag">Causal forests</span>
+          <span class="tag">AIPW</span>
+          <span class="tag">Heterogeneous effects</span>
+          <span class="tag">R / grf</span>
+        </div>
+        <h3>Heterogeneous Treatment Effects of COVID-19 Events on Well-Being</h3>
+        <p>
+          A published study had asked whether extraverts declined more under social distancing,
+          using interactions specified in advance. I re-asked the question inside a
+          potential-outcomes framework with generalized random forests, letting the data locate any
+          heterogeneity, and gated every interpretation behind a formal calibration test.
+        </p>
+        <span class="card-more">Estimator, identification, and what replicated &rarr;</span>
+      </div>
     </a>
   </section>
 
