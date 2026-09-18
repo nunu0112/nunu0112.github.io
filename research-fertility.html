@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Interpretable ML for Dyadic Prediction &middot; Eunwoo Kim</title>
-<meta name="description" content="Couple-grouped cross-validation, SMOTENC, and out-of-fold SHAP attribution applied to fertility desire in premarital couples — a test of whether partner information adds predictive value.">
+<meta name="description" content="Couple-grouped cross-validation and out-of-fold SHAP attribution applied to fertility desires in premarital couples.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=11">
+<link rel="stylesheet" href="style.css?v=12">
 </head>
 <body>
 
@@ -29,10 +29,6 @@
   <div class="page-header-inner">
     <p class="breadcrumb"><a href="research.html">Research</a><span>/</span>Interpretable ML for dyadic data</p>
     <h1>Interpretable Machine Learning for Dyadic Prediction</h1>
-    <p class="page-sub">
-      Predicting fertility desire in premarital couples &mdash; and using the prediction framework to
-      ask a question about partner influence that a regression coefficient cannot answer.
-    </p>
   </div>
 </header>
 
@@ -51,195 +47,154 @@
       predicts them from dyadic survey data on 515 premarital couples using random forest models,
       and then examines which variables drive the predictions. Because partners share
       relationship-level information, cross-validation is grouped by couple so that both members of
-      a pair always fall in the same fold, and every data-dependent step &mdash; oversampling,
-      encoding, threshold selection, and the SHAP explainer itself &mdash; is fit inside the
-      training fold. Shapley additive explanation values computed on held-out cases quantify how
-      much each variable contributed to the predictions, and a couple-level cluster bootstrap tests
-      whether adding partner-reported predictors improves prediction beyond a person's own
-      characteristics. The manuscript is in preparation.
+      a pair fall in the same fold, and every data-dependent step &mdash; oversampling, encoding,
+      threshold selection, and the Shapley explainer &mdash; is fit within the training fold.
+      Shapley additive explanation values computed on held-out cases quantify how much each variable
+      contributed to the predictions, and a couple-level cluster bootstrap examines whether adding
+      partner-reported predictors improves prediction beyond a person's own characteristics.
     </p>
   </section>
 
   <section>
     <h2>Background</h2>
     <p>
-      Whether to become a parent is not an individually held preference. It is negotiated between two
+      Whether to have children is not an individually held preference; it is negotiated between two
       people, and in this sample the two members of a couple agreed on the dichotomized outcome in
-      <strong>89.7%</strong> of couples. That fact drives both the substantive question and the
-      methodological design.
+      89.7% of couples. That observation shapes both the substantive question and the analytic
+      design.
     </p>
     <p>
-      The substantive question is one of <em>incremental validity</em>: does knowing about someone's
-      partner add predictive information beyond knowing about the person? Additive regression models
-      for dyadic data can estimate actor and partner coefficients, but they answer a different
-      question &mdash; the unique linear contribution of each term, holding the rest fixed. They
-      cannot say whether partner information is <em>redundant</em> with actor information, and they
-      assume in advance that influences combine additively when there is no reason to think they do.
+      The substantive question concerns incremental validity: how much does knowing about someone's
+      partner add beyond knowing about the person? Additive regression models for dyadic data
+      estimate actor and partner coefficients, but they address a somewhat different question &mdash;
+      the unique linear contribution of each term with the others held fixed &mdash; and they assume
+      in advance that influences combine additively.
     </p>
-    <div class="callout">
-      <strong>Why the dyadic structure is a methodological problem, not just a feature.</strong>
-      Because partners share relationship-level information, naive cross-validation leaks: if one
-      partner lands in the training fold and the other in the test fold, the model can recover the
-      held-out person's outcome from their partner's record, and apparent accuracy is inflated. Any
-      honest estimate here has to make the <em>couple</em>, not the individual, the unit of
-      resampling.
-    </div>
+    <p>
+      The dyadic structure also has a methodological consequence. Because partners share
+      relationship-level information, cross-validation that splits individuals can leak: if one
+      member of a couple is in the training fold and the other in the test fold, the held-out
+      person's outcome may be partly recoverable from their partner's record, and estimated
+      performance would be optimistic. The couple therefore has to be the unit of resampling.
+    </p>
   </section>
 
   <section>
     <h2>Methods</h2>
 
     <h3>Data and design</h3>
-    <ul class="method-list">
-      <li><span class="m-label">Sample</span> 515 Korean premarital couples, 1,030 individuals, both
-        partners having passed strict data-quality screening.</li>
-      <li><span class="m-label">Outcome</span> Desired number of children, dichotomized as none
-        versus one or more. The minority class is 18.2%, so the no-information rate is .818 &mdash;
-        which is precisely why accuracy is not the selection metric.</li>
-      <li><span class="m-label">Predictors</span> 85 measures per partner spanning demographics and
-        socioeconomic status, housing, family of origin, relationship history and structure,
-        relationship quality, personality and attachment, gender-role and divorce attitudes, and
-        financial habits. Three design matrices were built: actor-only (86 predictors), actor plus
-        partner (166), and partner-only (80).</li>
-      <li><span class="m-label">Missing data</span> Variable-level rather than case-level screening.
-        Missingness was tabulated across all candidate predictors and two patterns separated &mdash;
-        ordinary item nonresponse, and structural missingness from conditionally administered items
-        running as high as 99.6%. Only predictors with zero missingness were retained, so no
-        participants were lost. A partner pair was kept only if both members were complete, which
-        keeps the two design matrices structurally identical.</li>
-      <li><span class="m-label">Dyadic restructuring</span> The couple-wide file was reshaped into the
-        standard pairwise double-entry layout: two rows per couple, each person appearing once as
-        actor with their partner's variables attached as a partner block. This doubles the rows,
-        which is exactly why the couple must become the resampling unit.</li>
-    </ul>
-
-    <h3>Leakage controls</h3>
     <p>
-      These were engineered deliberately rather than inherited from a default pipeline, and they are
-      the part of the design I would defend first.
+      The analytic sample comprises 515 Korean premarital couples, or 1,030 individuals, with both
+      partners passing data-quality screening. The outcome is the desired number of children,
+      dichotomized as none versus one or more; the minority class is 18.2%, so the no-information
+      rate is .818 and accuracy is not an informative selection metric. Predictors comprise 85
+      measures per partner spanning demographics and socioeconomic status, housing, family of
+      origin, relationship history and quality, personality and attachment, gender-role and divorce
+      attitudes, and financial habits. Three design matrices were constructed: actor-only (86
+      predictors), actor plus partner (166), and partner-only (80).
     </p>
+    <p>
+      Missing data were handled by variable-level rather than case-level screening. Missingness was
+      tabulated across candidate predictors and two patterns distinguished &mdash; ordinary item
+      nonresponse and structural missingness arising from conditionally administered items &mdash;
+      and only predictors with complete data were retained, so no participants were dropped. A
+      partner pair was kept only where both members were complete, which keeps the two design
+      matrices structurally identical. The couple-wide file was then reshaped into the standard
+      pairwise double-entry layout, with each person appearing once as actor and their partner's
+      variables attached as a partner block.
+    </p>
+
+    <h3>Resampling and leakage controls</h3>
     <ul class="method-list">
-      <li><span class="m-label">Couple-grouped, stratified cross-validation</span>
-        <code>StratifiedGroupKFold</code> with 10 folds, grouped by couple so both partners always
-        fall in the same fold, and stratified on the outcome because an 18% minority class gives
-        unstable fold composition otherwise. Fold assignments are identical across models, so
-        comparisons are paired.</li>
-      <li><span class="m-label">The partner's own outcome is removed</span> With 89.7% within-couple
-        concordance it would trivially dominate any model that saw it.</li>
-      <li><span class="m-label">Couple-shared variables removed from the partner block</span> Five
-        variables whose within-couple responses are near-identical &mdash; relationship length
-        (<em>r</em> = .998), living arrangement (<em>r</em> = .87), and three others &mdash; were
-        dropped, because keeping both copies splits one signal across two columns and dilutes
-        measured importance. This makes the incremental-validity test conservative against itself.</li>
-      <li><span class="m-label">Everything fits inside the training fold</span> Oversampling,
-        scaling, decision-threshold selection, and SHAP explanation are all fit on training data
-        only. Category levels are pinned before splitting so every fold produces an identically
-        ordered dummy matrix.</li>
-      <li><span class="m-label">Metrics are pooled out-of-fold</span> Computed on the pooled
-        predictions for all 1,030 individuals, each from a model that never saw them.</li>
+      <li><span class="m-label">Couple-grouped, stratified cross-validation</span> Ten folds grouped
+        by couple, so both partners always fall in the same fold, and stratified on the outcome
+        given the small minority class. Fold assignments are identical across models, so comparisons
+        are paired.</li>
+      <li><span class="m-label">Outcome and shared variables removed</span> The partner's own
+        outcome is excluded, as is a set of variables whose within-couple responses are near
+        identical (relationship length, <em>r</em> = .998; living arrangement, <em>r</em> = .87, and
+        three others), since retaining both copies would divide one signal across two columns.</li>
+      <li><span class="m-label">Training-fold fitting</span> Oversampling, scaling, decision-threshold
+        selection, and Shapley explanation are all fit on training data only, with category levels
+        pinned before splitting so that every fold produces an identically ordered design matrix.</li>
+      <li><span class="m-label">Pooled out-of-fold metrics</span> Performance is computed on pooled
+        predictions for all 1,030 individuals, each from a model that did not see them.</li>
     </ul>
 
-    <h3>Models and class imbalance</h3>
-    <ul class="method-list">
-      <li><span class="m-label">Four pipelines, each on all three predictor sets</span> Random forest
-        with decision-threshold adjustment; random forest with SMOTENC oversampling; balanced random
-        forest with class-balanced bootstrapping; and an L2-regularized logistic regression baseline
-        with standardized continuous predictors.</li>
-      <li><span class="m-label">Three imbalance strategies compared head to head</span> rather than
-        one adopted by default. SMOTENC was applied to the raw, pre-encoding training fold so that
-        categorical columns are synthesized correctly instead of being interpolated across dummy
-        variables.</li>
-      <li><span class="m-label">No hyperparameter search &mdash; on purpose</span> Forests were grown
-        with 1,000 trees and library defaults. With no tuning there is no nested-CV requirement and
-        no selection bias in the out-of-sample estimate. The one tuned quantity is the decision
-        threshold, chosen inside each training fold from the forest's <em>out-of-bag</em> decision
-        function, so even threshold selection never touches held-out data.</li>
-      <li><span class="m-label">Model comparison inference</span> A hand-written couple-level cluster
-        bootstrap (2,000 resamples, resampling couples rather than individuals) gives the observed
-        &Delta;AUC with a 95% percentile interval and a two-sided bootstrap <em>p</em>-value.</li>
-    </ul>
-
-    <h3>Interpretation</h3>
-    <ul class="method-list">
-      <li><span class="m-label">Out-of-fold TreeSHAP</span> A tree explainer is fit per fold on that
-        fold's model and applied to that fold's held-out cases, then assembled into a full
-        out-of-fold attribution matrix. This is harder and more correct than the common practice of
-        fitting on everything and explaining everything: the attributions describe data the model did
-        not train on.</li>
-      <li><span class="m-label">Grouped SHAP for one-hot variables</span> Each dummy column is mapped
-        back to its parent variable and the per-fold contributions are summed back to the original
-        variable, separately for actor and partner versions. Without this, a variable with sixteen
-        levels has its importance artificially diluted across sixteen columns.</li>
-    </ul>
+    <h3>Models and interpretation</h3>
+    <p>
+      Four pipelines were run on each of the three predictor sets: random forest with
+      decision-threshold adjustment; random forest with SMOTENC oversampling; balanced random forest
+      with class-balanced bootstrapping; and an L2-regularized logistic regression baseline.
+      Oversampling was applied to the raw, pre-encoding training fold so that categorical values are
+      synthesized within categories rather than interpolated across dummy variables. No
+      hyperparameter search was conducted; forests were grown with 1,000 trees and library defaults,
+      which avoids a nested cross-validation requirement and any associated selection bias in the
+      out-of-sample estimate. The only tuned quantity is the decision threshold, selected within each
+      training fold from the forest's out-of-bag decision function. Model comparison uses a
+      couple-level cluster bootstrap (2,000 resamples of couples) giving the observed &Delta;AUC with
+      a percentile interval.
+    </p>
+    <p>
+      For interpretation, a tree explainer is fit per fold on that fold's model and applied to that
+      fold's held-out cases, giving out-of-fold attributions that describe data the model did not
+      train on. Contributions of dummy columns are summed back to their parent variable, separately
+      for actor and partner versions, so that variables with many levels are not diluted across
+      columns.
+    </p>
   </section>
 
   <section>
     <h2>Results</h2>
-
-    <h3>Prediction</h3>
     <p>
-      The best model &mdash; random forest with SMOTENC, actor predictors only &mdash; reached
-      <strong>AUC = .929</strong> on pooled out-of-fold predictions, against <strong>.811</strong>
-      for the regularized logistic baseline. The forests recovered 71&ndash;72% of the minority class
-      at 92&ndash;95% precision; the linear baseline recovered under half of it despite an accuracy of
-      .834, which is the concrete reason accuracy was rejected as a selection metric.
+      The best-performing model &mdash; random forest with SMOTENC, actor predictors only &mdash;
+      reached AUC = .929 on pooled out-of-fold predictions, compared with .811 for the regularized
+      logistic baseline. The forests recovered 71&ndash;72% of the minority class at 92&ndash;95%
+      precision, while the linear baseline recovered under half of it despite an accuracy of .834.
     </p>
 
     <figure class="research-figure">
-      <img src="assets/research/fert-actor-beeswarm.png" alt="SHAP beeswarm plot for the actor-only model showing the ten most influential grouped predictors, with one point per participant coloured by feature value and positioned by its contribution to the predicted outcome.">
-      <figcaption><span class="fig-label">Figure 1.</span> Out-of-fold SHAP values for the actor-only
-        model, top ten grouped predictors. One point per person, positioned by that person's
-        contribution and coloured by their value on the variable. Living arrangement
-        (<code>livingarr</code>) and relationship length (<code>DTL</code>) lead; axis labels are the
-        study's internal variable codes.</figcaption>
+      <img src="assets/research/fert-actor-beeswarm.png" alt="SHAP beeswarm plot for the actor-only model showing the ten most influential grouped predictors, with one point per participant coloured by feature value.">
+      <figcaption><span class="fig-label">Figure 1.</span> Out-of-fold Shapley values for the
+        actor-only model, top ten grouped predictors, with one point per person coloured by their
+        value on that variable. Living arrangement (<code>livingarr</code>) and relationship length
+        (<code>DTL</code>) rank highest; axis labels are the study's internal variable codes.</figcaption>
     </figure>
 
-    <h3>Does the partner add anything?</h3>
     <p>
-      Adding 80 partner predictors changed AUC by <strong>&minus;.0045</strong>, 95% CI
-      [&minus;.0124, .0032], <em>p</em> = .26 &mdash; no improvement, and the direction held across
-      all four pipelines, so the null is not an artifact of one estimator.
+      Adding 80 partner predictors changed AUC by &minus;.0045, 95% CI [&minus;.0124, .0032],
+      <em>p</em> = .26, and the direction was consistent across all four pipelines. Several
+      observations suggest this reflects redundancy rather than irrelevance: the partner block alone,
+      containing no actor information, reached AUC = .927; seven of the ten most influential
+      partner-only predictors are partner counterparts of actor-only top-ten variables; and
+      within-couple correlations among the leading predictors average <em>r</em> &asymp; .55&ndash;.58,
+      with couples agreeing on the outcome 89.7% of the time.
     </p>
-    <p>
-      The interesting part is what that null does <em>not</em> mean. Three pieces of evidence show
-      this is redundancy rather than irrelevance:
-    </p>
-    <ul class="plain-list">
-      <li>The <strong>partner block alone</strong> &mdash; 80 predictors containing no actor
-        information whatsoever &mdash; reaches <strong>AUC = .927</strong>, essentially matching the
-        actor-only model's .929.</li>
-      <li>Seven of the ten most influential partner-only predictors are the partner counterparts of
-        actor-only top-ten variables.</li>
-      <li>Within-couple correlations among the leading predictors average <em>r</em> &asymp; .55&ndash;.58,
-        and couples agree on the outcome 89.7% of the time.</li>
-    </ul>
 
     <figure class="research-figure">
       <img src="assets/research/fert-partner-beeswarm.png" alt="SHAP beeswarm plot for the partner-only model, showing that partner-prefixed versions of the same constructs carry comparable predictive weight.">
-      <figcaption><span class="fig-label">Figure 2.</span> The partner-only model. Knowing nothing
-        about a person except who they are marrying predicts their fertility desire about as well as
-        knowing everything about the person &mdash; because the two records carry largely the same
-        information.</figcaption>
+      <figcaption><span class="fig-label">Figure 2.</span> The partner-only model. Predictors
+        describing only the partner performed comparably to those describing the person, consistent
+        with the two records carrying largely overlapping information.</figcaption>
     </figure>
 
     <figure class="research-figure">
       <img src="assets/research/fert-both-beeswarm.png" alt="SHAP beeswarm plot for the combined actor and partner model, showing actor and partner versions of the same constructs alternating in the ranking.">
-      <figcaption><span class="fig-label">Figure 3.</span> With both blocks in the model, actor and
-        partner versions of the same constructs interleave in the ranking &mdash; the visual signature
-        of two columns splitting one underlying signal.</figcaption>
+      <figcaption><span class="fig-label">Figure 3.</span> With both blocks included, actor and
+        partner versions of the same constructs interleave in the ranking.</figcaption>
     </figure>
 
     <figure class="research-figure">
-      <img src="assets/research/fert-both-bar.png" alt="Bar chart of mean absolute SHAP value for the top ten predictors in the combined actor and partner model, with values on the order of 0.01 to 0.03.">
-      <figcaption><span class="fig-label">Figure 4.</span> Mean |SHAP| for the combined model. Note
-        the compressed scale relative to the actor-only model: importance is not lost, it is divided
-        between two correlated copies of the same construct.</figcaption>
+      <img src="assets/research/fert-both-bar.png" alt="Bar chart of mean absolute SHAP value for the top ten predictors in the combined actor and partner model.">
+      <figcaption><span class="fig-label">Figure 4.</span> Mean |SHAP| for the combined model. The
+        scale is compressed relative to the actor-only model, consistent with importance being
+        divided between two correlated versions of the same construct.</figcaption>
     </figure>
 
     <p>
-      Read together, these results say something a coefficient table would have hidden: a couple's
-      fertility desire is better described as a shared property of the dyad than as two separately
-      determined individual preferences that happen to correlate.
+      Taken together, these results suggest that a couple's fertility desires may be better
+      described as a property shared across the dyad than as two separately determined individual
+      preferences that happen to correlate.
     </p>
   </section>
 

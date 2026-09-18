@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Heterogeneous Treatment Effects of COVID-19 Events &middot; Eunwoo Kim</title>
-<meta name="description" content="Generalized random forests applied to COVID-19 events and well-being: orthogonalization, cross-fitted CATE estimation, AIPW, and formal calibration testing.">
+<meta name="description" content="Generalized random forests applied to COVID-19 events and well-being: orthogonalization, cross-fitted CATE estimation, AIPW, and calibration testing.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=11">
+<link rel="stylesheet" href="style.css?v=12">
 </head>
 <body>
 
@@ -29,11 +29,6 @@
   <div class="page-header-inner">
     <p class="breadcrumb"><a href="research.html">Research</a><span>/</span>Heterogeneous treatment effects</p>
     <h1>Heterogeneous Treatment Effects of COVID-19 Events on Well-Being</h1>
-    <p class="page-sub">
-      A published finding about who suffered most under social distancing, re-asked inside a
-      potential-outcomes framework with causal forests &mdash; so that the data, not the analyst,
-      locate the heterogeneity.
-    </p>
   </div>
 </header>
 
@@ -72,29 +67,15 @@
     <h2>Background</h2>
     <p>
       Choi et al. (2022) tracked well-being in South Korea through the early pandemic and reported
-      that extraverts declined more than introverts after social distancing was implemented &mdash; an
-      extraversion &times; distancing interaction, estimated with polynomial regression and
-      mixed-effects models. It is a good study, and its design has three properties I wanted to
-      change.
-    </p>
-    <ul class="method-list">
-      <li><span class="m-label">A constant effect is assumed</span> Multilevel models estimate one
-        treatment effect shared by everyone; any subgroup structure has to be hypothesized in advance
-        and entered as an interaction term. If the moderator is something the analyst did not think
-        of, the design cannot find it.</li>
-      <li><span class="m-label">Functional form is committed to in advance</span> Nonlinear effects
-        and higher-order interactions among many covariates are not representable without specifying
-        them.</li>
-      <li><span class="m-label">The estimand is associational</span> The substantive claim is causal
-        in spirit but the model is descriptive. I wanted the same questions asked with an explicit
-        causal estimand.</li>
-    </ul>
-    <p>
-      Generalized random forests (Athey, Tibshirani &amp; Wager, 2019) address all three. The
-      estimand becomes the <strong>conditional</strong> average treatment effect &tau;(x), a
-      <em>function</em> of covariates rather than a constant, and the trees are grown to maximize
-      heterogeneity between subgroups rather than to minimize prediction error &mdash; so subgroup
-      structure is discovered rather than pre-specified.
+      that extraverts declined more than introverts after social distancing was implemented, an
+      interaction estimated with polynomial regression and mixed-effects models. Re-examining that
+      question with generalized random forests (Athey, Tibshirani &amp; Wager, 2019) changes three
+      features of the analysis. The estimand becomes the conditional average treatment effect
+      &tau;(x), a function of covariates rather than a constant, so subgroup structure need not be
+      hypothesized in advance as an interaction term. Functional form is not committed to in
+      advance, so nonlinear effects and higher-order interactions among many covariates can be
+      represented. And the analysis is framed within an explicit potential-outcomes estimand rather
+      than an associational one.
     </p>
   </section>
 
@@ -102,139 +83,116 @@
     <h2>Methods</h2>
 
     <h3>Data and treatment definitions</h3>
-    <ul class="method-list">
-      <li><span class="m-label">Data</span> Secondary analysis of the longitudinal survey from Choi
-        et al. (2022), publicly archived on OSF and collected in collaboration with the Center for
-        Happiness Studies at Seoul National University: <strong>69,986 participants</strong>,
-        130,798 observations, January 1 &ndash; April 7, 2020.</li>
-      <li><span class="m-label">Outcomes</span> Satisfaction with life, positive affect, negative
-        affect, meaning in life, stress, and a composite well-being index, each on an 11-point scale.</li>
-      <li><span class="m-label">Two separate causal contrasts</span> The study window splits into
-        three phases, giving one treatment for the <em>outbreak</em> (phase 1 &rarr; 2) and a separate
-        treatment for the <em>implementation of social distancing</em> (phase 2 &rarr; 3). Each is
-        fitted in its own set of forests rather than being folded into a single time variable.</li>
-      <li><span class="m-label">Moderator of interest</span> Extraversion, 24 NEO-PI-R items, entered
-        as a composite <em>and</em> as its three facets (sociability, assertiveness, energy) so the
-        analysis could identify which facet drives any heterogeneity, not merely whether extraversion
-        does.</li>
-      <li><span class="m-label">Repeated measures</span> Causal forests do not natively handle
-        repeated responses, so observations were averaged within participant within phase &mdash;
-        following Athey &amp; Wager's treatment of unequally sized clusters &mdash; and subject ID was
-        additionally entered as a covariate to absorb individual-level confounding.</li>
-    </ul>
+    <p>
+      The analysis is a secondary analysis of the longitudinal survey from Choi et al. (2022),
+      publicly archived on OSF and collected in collaboration with the Center for Happiness Studies
+      at Seoul National University: 69,986 participants and 130,798 observations between January 1
+      and April 7, 2020. Outcomes are satisfaction with life, positive affect, negative affect,
+      meaning in life, stress, and a composite well-being index, each on an 11-point scale.
+    </p>
+    <p>
+      The study window divides into three phases, giving two separate treatments &mdash; the outbreak
+      (phase 1 to 2) and the implementation of social distancing (phase 2 to 3) &mdash; each fitted in
+      its own set of forests rather than folded into a single time variable. Extraversion enters as
+      the moderator of interest, as a composite and as its three facets, so that the analysis can
+      indicate which facet is associated with any heterogeneity. Because causal forests do not
+      natively accommodate repeated responses, observations were averaged within participant within
+      phase, following Athey and Wager's treatment of unequally sized clusters, with subject ID
+      entered as a covariate.
+    </p>
 
     <h3>How a forest locates the comparison group</h3>
     <p>
-      The step that makes this work is easy to state and easy to miss. A causal forest does not
-      estimate one effect and then slice it; it estimates the effect <em>at a point</em> in
-      covariate space, and it has to decide which other observations are similar enough to that
-      point to inform the estimate. Rather than fixing a neighborhood in advance, it lets the trees
-      define one: each tree contributes a weight to every observation according to how often that
-      observation lands in the same terminal leaf as the target point. Because the trees are split
-      to maximize heterogeneity in the effect, the resulting neighborhood is adapted to the question
-      being asked.
+      A causal forest estimates the effect at a point in covariate space, which requires deciding
+      which other observations are similar enough to that point to inform the estimate. Rather than
+      fixing a neighborhood in advance, the trees define one: each tree gives weight to an
+      observation according to how often it lands in the same terminal leaf as the target point.
+      Because the trees are split to maximize heterogeneity in the effect, the resulting
+      neighborhood is adapted to the quantity being estimated.
     </p>
     <figure class="research-figure">
-      <img src="assets/research/grf-neighborhood.png" alt="Three partitioned squares, each showing a different tree's terminal nodes with a target point marked by a cross and the training points in the same leaf drawn larger; below, a single square combines them, showing how often each training point shared a leaf with the target.">
+      <img src="assets/research/grf-neighborhood.png" alt="Three partitioned squares, each showing a different tree's terminal nodes with a target point marked by a cross and the training points in the same leaf drawn larger; below, a single square combines them.">
       <figcaption><span class="fig-label">Figure 1.</span> The random forest weighting function.
-        Each tree gives positive weight to the training examples sharing a leaf with the target
-        point and zero to the rest; averaging over trees measures how often each example falls in
-        the same leaf, which becomes the adaptive neighborhood used to estimate the effect there.
-        Figure reproduced from Athey &amp; Wager (2019).</figcaption>
+        Each tree gives positive weight to training examples sharing a leaf with the target point and
+        zero to the rest; averaging over trees measures how often each example falls in the same
+        leaf, which defines the adaptive neighborhood used to estimate the effect there. Reproduced
+        from Athey &amp; Wager (2019).</figcaption>
     </figure>
 
     <h3>The estimator</h3>
     <figure class="research-figure">
-      <img src="assets/research/grf-estimator.png" alt="Three stacked equations: the Robinson residual-on-residual orthogonalization; the locally weighted cross-fitted estimator of the conditional average treatment effect using forest adaptive-neighborhood weights; and the AIPW doubly robust estimator of the average treatment effect.">
-      <figcaption><span class="fig-label">Figure 2.</span> The three steps of estimation. Confounding
-        is handled non-parametrically through the nuisance functions rather than by a fixed adjustment
-        set; the neighborhood over which the effect is estimated is learned by the forest instead of
-        being specified; and the average effect is summarized doubly robustly rather than by
-        averaging the fitted CATEs.</figcaption>
+      <img src="assets/research/grf-estimator.png" alt="Three stacked equations: Robinson orthogonalization; the locally weighted cross-fitted estimator of the conditional average treatment effect; and the AIPW doubly robust estimator.">
+      <figcaption><span class="fig-label">Figure 2.</span> The three estimation steps. Confounding is
+        handled through non-parametrically estimated nuisance functions rather than a fixed
+        adjustment set; the neighborhood is learned rather than specified; and the average effect is
+        summarized doubly robustly rather than by averaging the fitted conditional effects.</figcaption>
     </figure>
 
-    <h3>Inference and interpretation &mdash; a gated procedure</h3>
+    <h3>Inference and interpretation</h3>
     <p>
-      Heterogeneous-effect estimates are easy to over-read: a forest will always return a distribution
-      of &tau;&#770;(x), whether or not real heterogeneity exists. The analysis was therefore gated
-      behind a formal test at each stage.
+      A forest returns a distribution of estimated effects whether or not heterogeneity is present,
+      so interpretation was conditioned on a formal test at each stage. The calibration test
+      regresses the doubly robust scores on the mean and differenced forest predictions, returning
+      one coefficient for the average effect and one for heterogeneity. Heterogeneity was examined
+      only where the average effect was calibrated, and the heterogeneity-interpretation tools were
+      applied only where the heterogeneity coefficient was significant; several models stopped at
+      the first stage, and this is reported as such.
     </p>
-    <ul class="method-list">
-      <li><span class="m-label">Calibration test first</span> <code>test_calibration()</code>
-        regresses the doubly robust scores on the mean and differenced forest predictions, returning
-        one coefficient for the average effect and one for heterogeneity.</li>
-      <li><span class="m-label">The gate</span> Heterogeneity was tested only where the average
-        effect was calibrated, and the heterogeneity-interpretation tools were applied only where
-        the heterogeneity coefficient was significant. Several models stopped at the first gate, and
-        that is reported rather than worked around.</li>
-      <li><span class="m-label">Three triangulating interpretations</span> Variable importance
-        (depth-weighted split frequency, which indexes contribution to heterogeneity because splits
-        maximize it); best linear projection of the CATE onto the covariates; and a comparison of
-        covariate means between the high- and low-CATE halves of the sample. Each alone is
-        insufficient &mdash; in particular, a null best-linear-projection result does not license the
-        conclusion that a variable is irrelevant, since it only detects linear structure.</li>
-      <li><span class="m-label">Software</span> R, the <code>grf</code> package.</li>
-    </ul>
+    <p>
+      Where interpretation proceeded, three methods were used together: variable importance
+      (depth-weighted split frequency, which indexes contribution to heterogeneity because splits
+      are chosen to maximize it), best linear projection of the conditional effects onto the
+      covariates, and a comparison of covariate means between the high- and low-effect halves of the
+      sample. Each is partial on its own; in particular, a null best-linear-projection result
+      indicates the absence of a linear relation rather than the absence of a relation. Analyses
+      were carried out in R with the <code>grf</code> package.
+    </p>
   </section>
 
   <section>
     <h2>Results</h2>
 
-    <h3>Social distancing: a broad, uniform effect</h3>
     <figure class="research-figure">
-      <img src="assets/research/grf-ate.png" alt="Lollipop chart of AIPW average treatment effects of social distancing on six well-being outcomes. Negative affect increases by 0.210 and stress by 0.099; satisfaction with life falls by 0.146, meaning in life by 0.178, positive affect by 0.181, and the composite well-being index by 0.183.">
+      <img src="assets/research/grf-ate.png" alt="Chart of AIPW average treatment effects of social distancing on six well-being outcomes, with negative affect and stress increasing and the remaining outcomes decreasing.">
       <figcaption><span class="fig-label">Figure 3.</span> AIPW average treatment effects of the
         implementation of social distancing, all <em>p</em> &lt; .001. Every well-being measure moved
-        in the harmful direction. Crucially, <strong>none</strong> of these models showed significant
-        heterogeneity &mdash; the effect was broad and roughly uniform, so no subgroup interpretation
-        was run.</figcaption>
+        in the unfavourable direction. None of these models showed significant heterogeneity, so no
+        subgroup interpretation was carried out for them.</figcaption>
     </figure>
 
-    <h3>The outbreak: smaller, and genuinely heterogeneous</h3>
     <p>
-      Only three outcome models passed the average-effect gate for the outbreak contrast. Satisfaction
-      with life <em>increased</em> slightly (+0.053, <em>p</em> = .006) and meaning in life decreased
-      (&minus;0.071, <em>p</em> = .001). Both then showed significant heterogeneity
+      For the outbreak contrast, three outcome models passed the average-effect stage. Satisfaction
+      with life increased slightly (+0.053, <em>p</em> = .006) and meaning in life decreased
+      (&minus;0.071, <em>p</em> = .001); both then showed significant heterogeneity
       (<em>p</em> &lt; .001), so the interpretation tools were applied to those two.
     </p>
 
     <figure class="research-figure">
-      <img src="assets/research/grf-varimp.png" alt="Grouped horizontal bar chart of variable importance for the two outbreak models. Subject ID and age rank highest, followed by the four extraversion measures — energy, composite, sociability, assertiveness — with sex and region of residence lowest.">
+      <img src="assets/research/grf-varimp.png" alt="Grouped horizontal bar chart of variable importance for the two outbreak models, with subject ID and age highest, followed by four extraversion measures, then sex and region.">
       <figcaption><span class="fig-label">Figure 4.</span> Variable importance in the two outbreak
-        models that showed real heterogeneity. Every extraversion measure exceeded .10 in both models,
-        and the facet ordering was consistent across them: energy &gt; sociability &gt; assertiveness.
-        Subject ID, age, sex, and region were nuisance controls.</figcaption>
+        models that showed heterogeneity. All four extraversion measures exceeded .10 in both models,
+        with a consistent facet ordering (energy, then sociability, then assertiveness). Subject ID,
+        age, sex, and region served as controls.</figcaption>
     </figure>
 
     <p>
-      The three interpretation methods did not fully agree, which is itself the useful finding.
-      Variable importance placed all four extraversion measures above sex and region; the median-split
-      comparison found extraversion reliably higher in the high-CATE group; but the best linear
-      projection found only age and sex significant. Since the projection detects only linear
-      relations between a covariate and the CATE, the reasonable reading is that extraversion
-      contributes to heterogeneity in a way that is not linear &mdash; not that it fails to contribute.
+      The three interpretation methods converged only partially. Variable importance placed all four
+      extraversion measures above sex and region, and the median-split comparison found extraversion
+      higher in the high-effect group, while the best linear projection identified only age and sex.
+      Since the projection detects linear relations between a covariate and the conditional effect,
+      the pattern is consistent with extraversion contributing to heterogeneity in a form that is
+      not linear.
     </p>
-
-    <h3>What replicated, and what did not</h3>
-    <ul class="plain-list">
-      <li><strong>Replicated:</strong> the negative effect of the outbreak on meaning in life, and the
-        broad, uniformly harmful effect of social distancing across all well-being indicators.</li>
-      <li><strong>Diverged:</strong> the outbreak <em>increased</em> satisfaction with life here,
-        opposite to the original report &mdash; consistent with the original only reporting a slight
-        decline in the composite index, where conflicting subscore effects can net out.</li>
-      <li><strong>Diverged in both directions on extraversion:</strong> the original found no
-        outbreak &times; extraversion interaction but a significant distancing &times; extraversion
-        interaction. This analysis found the reverse &mdash; heterogeneity in the outbreak effect,
-        none in the distancing effect.</li>
-    </ul>
-    <div class="callout">
-      <strong>The limitation I would raise first.</strong> Because the same individuals appear before
-      and after each event, this is a before/after comparison rather than a clean counterfactual
-      contrast, and entering subject ID as a covariate does not fully exploit what a causal forest
-      can do. A stronger design would compare regions or groups differentially exposed to the same
-      event. I flagged this in the thesis rather than leaving it implicit, because it bounds how
-      causally the estimates should be read.
-    </div>
+    <p>
+      Relative to the original study, the negative effect of the outbreak on meaning in life and the
+      broad unfavourable effect of social distancing both replicated. Satisfaction with life
+      increased after the outbreak here, in the opposite direction to the original report, which is
+      compatible with the original reporting a slight decline in a composite index within which
+      subscale effects may offset. The extraversion findings also differed: heterogeneity appeared
+      in the outbreak effect rather than in the social-distancing effect. The approach was
+      subsequently extended in a follow-up analysis of a related pandemic-era question, and the work
+      was taken to the level of the undergraduate thesis.
+    </p>
   </section>
 
   <div class="page-nav">

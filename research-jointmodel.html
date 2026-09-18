@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=11">
+<link rel="stylesheet" href="style.css?v=12">
 </head>
 <body>
 
@@ -29,11 +29,6 @@
   <div class="page-header-inner">
     <p class="breadcrumb"><a href="research.html">Research</a><span>/</span>Joint behavioral&ndash;neural modeling</p>
     <h1>Joint Modeling of Single-Trial Behavior and fMRI Activity</h1>
-    <p class="page-sub">
-      A factor-analytic neural diffusion decision model with a Bayesian lasso linking function,
-      extended to a rewarded recognition-memory task so that decision parameters and brain responses
-      are estimated together rather than in sequence.
-    </p>
   </div>
 </header>
 
@@ -75,38 +70,30 @@
   <section>
     <h2>Background</h2>
     <p>
-      Model-based cognitive neuroscience exists to give latent model components &mdash; the rate at
+      Model-based cognitive neuroscience aims to give latent model components &mdash; the rate at
       which evidence accumulates, the caution with which a threshold is set &mdash; a neural
-      interpretation rather than leaving them as descriptive fits to behavior. In practice this is
-      almost always done in two steps: fit a cognitive model to behavior, take the resulting
-      parameter estimates, and relate them to brain activity.
+      interpretation rather than leaving them as descriptive fits to behavior. This is usually done
+      in two steps: a cognitive model is fit to behavior, and the resulting parameter estimates are
+      then related to brain activity.
     </p>
 
     <figure class="research-figure">
-      <img src="assets/research/joint-framework.png" alt="A schematic with three linked nodes: theta, omega, and delta. Theta points to a behavioral panel showing four diffusion evidence-accumulation traces plotted against response time; delta points to a neural panel showing axial fMRI activation slices. Omega, between them, is the linking function.">
-      <figcaption><span class="fig-label">Figure 1.</span> The joint modeling framework. A behavioral
-        model (&theta;), a neural model (&delta;), and a linking function (&Omega;) between them are
-        estimated in a single pass, so the two modalities constrain each other.</figcaption>
+      <img src="assets/research/joint-framework.png" alt="A schematic with three linked nodes: theta, omega, and delta. Theta points to a behavioral panel showing diffusion evidence-accumulation traces plotted against response time; delta points to a neural panel showing axial fMRI activation slices. Omega, between them, is the linking function.">
+      <figcaption><span class="fig-label">Figure 1.</span> The joint modeling framework: a behavioral
+        model (&theta;), a neural model (&delta;), and a linking function (&Omega;) estimated
+        together, so that the two modalities constrain each other.</figcaption>
     </figure>
 
-    <p>That two-step approach has two specific costs.</p>
-    <ul class="method-list">
-      <li><span class="m-label">Parameter uncertainty is not propagated</span> Carrying point
-        estimates into a second-stage correlation treats a noisy quantity as if it were known. This
-        bites hardest for <em>single-trial</em> parameters, which are noisy by construction, and the
-        consequence is attenuation &mdash; the true brain&ndash;behavior association is
-        systematically underestimated.</li>
-      <li><span class="m-label">Information flows only one way</span> The neural data never get to
-        say anything back about the cognitive model. They are a destination, not a constraint.</li>
-    </ul>
-    <div class="callout">
-      <strong>The alternative.</strong> The joint modeling framework in model-based cognitive
-      neuroscience (Turner et al., 2017) specifies a behavioral submodel, a neural submodel, and a
-      linking function between their parameters, and estimates all three simultaneously. Uncertainty
-      propagates correctly, the neural data help identify the cognitive parameters, and
-      brain&ndash;behavior associations become quantities estimated <em>inside</em> the model rather
-      than post-hoc correlations.
-    </div>
+    <p>
+      The two-step approach carries two costs. Carrying point estimates into a second-stage
+      correlation treats a noisy quantity as if it were known, which is most consequential for
+      single-trial parameters, and tends to attenuate the estimated brain&ndash;behavior
+      association. And information flows in one direction only: the neural data cannot constrain
+      the cognitive model. Joint modeling instead specifies a behavioral submodel, a neural
+      submodel, and a linking function between their parameters, and estimates all three at once,
+      so that uncertainty propagates and brain&ndash;behavior associations become quantities
+      estimated within the model rather than post-hoc correlations.
+    </p>
   </section>
 
   <section>
@@ -114,131 +101,113 @@
 
     <h3>Task and data</h3>
     <figure class="research-figure">
-      <img src="assets/research/joint-task.png" alt="Trial timeline: a memory stimulus screen asking 'Is this Old/New?' with the word APPLE during a 3500 millisecond response period, followed by a feedback screen showing the amount won and a running total with the background turning green for a correct response, then a 500 millisecond blank. One test trial totals 4000 milliseconds.">
+      <img src="assets/research/joint-task.png" alt="Trial timeline: a memory stimulus screen asking 'Is this Old/New?' during a 3500 millisecond response period, followed by a feedback screen showing the amount won and a running total, then a 500 millisecond blank. One test trial totals 4000 milliseconds.">
       <figcaption><span class="fig-label">Figure 2.</span> One test trial of the rewarded word
-        recognition task (Han et al., 2010). Reward is a payoff-asymmetry manipulation: which kind of
-        correct response earns money, and which kind of error is penalized, changes by block.</figcaption>
+        recognition task (Han et al., 2010). Reward is manipulated as a payoff asymmetry: which kind
+        of correct response earns money, and which kind of error is penalized, varies by block.</figcaption>
     </figure>
-    <ul class="method-list">
-      <li><span class="m-label">Design</span> Old/new word recognition with fMRI, 20 participants
-        (11 female, mean age 24). Three blocked reward conditions: no reward (200 trials), hit reward
-        (100 trials; +$1 for a hit, &minus;$1 for a false alarm), and correct-rejection reward
-        (100 trials; +$1 for a correct rejection, &minus;$1 for a miss).</li>
-      <li><span class="m-label">Neural preprocessing</span> Slice-timing correction, realignment, and
-        MNI normalization; single-trial beta estimation by <strong>Least Squares Separate</strong>
-        (Mumford et al., 2012), which fits one GLM per trial so that trial-level activity estimates
-        stay stable when trials are closely spaced; conversion to percent signal change; and
-        averaging within AAL3 atlas parcels to give one value per trial per region.</li>
-      <li><span class="m-label">Alignment</span> Behavioral and neural rows are reconciled explicitly
-        &mdash; run order was counterbalanced across participants, so physical run index and
-        condition label do not coincide. Trials dropped on one side are dropped on the other, with a
-        hard row-count check and a rank-correlation check between behavioral and neural trial onsets.</li>
-    </ul>
+    <p>
+      Twenty participants (11 female, mean age 24) performed old/new word recognition during fMRI
+      under three blocked reward conditions: no reward (200 trials), hit reward (100 trials) and
+      correct-rejection reward (100 trials). Neural preprocessing comprised slice-timing correction,
+      realignment, and MNI normalization, followed by single-trial beta estimation using Least
+      Squares Separate (Mumford et al., 2012), conversion to percent signal change, and averaging
+      within AAL3 atlas parcels, giving one value per trial per region. Because run order was
+      counterbalanced across participants, behavioral and neural rows are reconciled explicitly,
+      with trials dropped on one side also dropped on the other and alignment verified by row counts
+      and by the rank correlation between behavioral and neural trial onsets.
+    </p>
 
     <h3>The three submodels</h3>
     <ul class="method-list">
-      <li><span class="m-label">Behavioral &mdash; diffusion decision model</span>
+      <li><span class="m-label">Behavioral</span> A diffusion decision model,
         <code>(RT_t, r_t) ~ Wiener(a, &tau;_t, &zeta;_t, &xi;_t)</code>. Boundary separation
-        <code>a</code> is a single policy parameter, while non-decision time <code>&tau;_t</code>,
-        starting point <code>&zeta;_t</code>, and drift rate <code>&xi;_t</code> vary trial to trial
-        &mdash; these three are exactly the quantities that become latent factors. Positivity and
+        <code>a</code> is a single policy parameter, while non-decision time, starting point, and
+        drift rate vary from trial to trial; these three become the latent factors. Positivity and
         boundedness are handled by estimating <code>&tau;</code> on the log scale and
         <code>&zeta;</code> on the logit scale, and drift is signed by stimulus type so that
-        <code>&beta;_stim</code> estimates old&ndash;new drift separation as a model-based
-        discriminability index.</li>
+        <code>&beta;_stim</code> estimates old&ndash;new drift separation.</li>
       <li><span class="m-label">Neural</span> Trial-level, ROI-averaged percent-signal-change betas
-        as <code>p</code> observed indicators with a multivariate normal measurement model and
-        region-specific residual variances <code>&Psi;</code>.</li>
+        as observed indicators, with a multivariate normal measurement model and region-specific
+        residual variances.</li>
       <li><span class="m-label">Linking function</span> A factor-analytic structure in which the
-        three trial-level decision parameters <em>are</em> the latent factors, and ROI responses load
-        onto them through a <code>p &times; 3</code> matrix <code>&Lambda;</code>. Each
-        <code>&Lambda;_jk</code> is the strength with which region <em>j</em> tracks cognitive
-        component <em>k</em>, so <code>&Sigma; = &Lambda;&Phi;&Lambda;&#7488; + &Psi;</code>.</li>
+        three trial-level decision parameters are the latent factors and ROI responses load onto
+        them through a loading matrix <code>&Lambda;</code>, so that
+        <code>&Sigma; = &Lambda;&Phi;&Lambda;&#7488; + &Psi;</code> and each
+        <code>&Lambda;_jk</code> indexes how strongly region <em>j</em> tracks component <em>k</em>.</li>
     </ul>
     <p>
-      What makes the model genuinely joint is that the decision parameters and the neural signal are
-      drawn from one <code>(3+p) &times; (3+p)</code> covariance structure, rather than from two
-      models linked afterwards. The neural data therefore help identify the single-trial decision
-      parameters, and the uncertainty in those parameters propagates into the loadings.
+      Because the decision parameters and the neural signal are drawn from a single covariance
+      structure rather than from two models linked afterwards, the neural data contribute to
+      identifying the single-trial decision parameters, and uncertainty in those parameters
+      propagates into the loadings.
     </p>
 
     <h3>Regularization and identification</h3>
     <ul class="method-list">
       <li><span class="m-label">Bayesian lasso on the loadings</span> A hierarchical
-        normal&ndash;exponential scale mixture &mdash; <code>&Lambda;_jk ~ Normal(0, &radic;(&tau;&sup2;_jk &psi;_j))</code>
-        with <code>&tau;&sup2;_jk ~ Exponential(&kappa;&sup2;/2)</code> and
-        <code>&kappa;&sup2; ~ Gamma(5, 0.05)</code> &mdash; shrinking irrelevant loadings toward zero.
-        With well over a hundred AAL3 regions this is not optional.</li>
-      <li><span class="m-label">Factor covariance</span> <code>&Phi;</code> parameterized through a
-        Cholesky factor with an LKJ(2) prior on the correlation matrix and half-Cauchy scales.</li>
+        normal&ndash;exponential scale mixture shrinks small loadings toward zero, which is necessary
+        given the number of AAL3 regions relative to the available trials.</li>
+      <li><span class="m-label">Factor covariance</span> <code>&Phi;</code> is parameterized through
+        a Cholesky factor with an LKJ(2) prior on the correlation matrix and half-Cauchy scales.</li>
       <li><span class="m-label">Rotational indeterminacy</span> Resolved with sign-constrained anchor
-        regions &mdash; one designated ROI per factor with a positive loading floor, and cross-loadings
-        parameterized as bounded ratios of the anchor loading. Without this the factors are only
-        identified up to rotation and the loading matrix is uninterpretable.</li>
-      <li><span class="m-label">Condition comparison inside one model</span> A variant with
-        condition-specific loadings <code>&Lambda;_c</code> and shrinkage-prior mean offsets lets the
-        three reward conditions be compared within a single fit instead of by fitting three separate
-        models and comparing point estimates.</li>
+        regions, one per factor, with cross-loadings parameterized as bounded ratios of the anchor
+        loading; without this the factors are identified only up to rotation.</li>
+      <li><span class="m-label">Condition comparison</span> A variant with condition-specific
+        loadings and shrinkage-prior mean offsets allows the three reward conditions to be compared
+        within a single fit rather than across separately fitted models.</li>
     </ul>
 
     <h3>Estimation</h3>
-    <ul class="method-list">
-      <li><span class="m-label">Sampler</span> Stan via <code>rstan</code>, Hamiltonian Monte Carlo
-        with NUTS, using Stan's built-in first-passage-time density for the diffusion likelihood.</li>
-      <li><span class="m-label">Two-stage fitting</span> An initial run of 6 chains &times; 1,000
-        iterations with hand-constructed informative starting values; the chain with the highest mean
-        log-posterior is then used to seed the main run of 3 chains &times; 10,000 iterations
-        (2,000 warm-up), <code>adapt_delta</code> 0.85. This is a practical answer to a hard geometry:
-        naive initialization on a model with this many trial-level parameters wastes most of the
-        sampling budget.</li>
-      <li><span class="m-label">Scale</span> Models are pre-compiled and run as SLURM array jobs over
-        the participant &times; condition grid.</li>
-      <li><span class="m-label">Diagnostics</span> <code>R&#770;</code>, effective sample size,
-        divergent-transition counts, and trace plots for the log-posterior and the anchor loadings,
-        saved with every fit and summarized across participants.</li>
-      <li><span class="m-label">Validation</span> Parameter-recovery datasets were simulated across
-        noise levels and loading structures at both <code>p = 30</code> and <code>p = 128</code>
-        before the model was applied to real data. Three linking structures (free, independent, and
-        unit-variance factor covariance) are implemented and compared.</li>
-    </ul>
+    <p>
+      Models are estimated in Stan via <code>rstan</code> using Hamiltonian Monte Carlo with NUTS
+      and the built-in first-passage-time density. Fitting proceeds in two stages: a short
+      exploratory run of six chains with hand-constructed starting values, after which the chain
+      with the highest mean log-posterior seeds a main run of three chains &times; 10,000 iterations
+      (2,000 warm-up). This addresses the difficulty of sampling a model with three latent
+      parameters per trial from naive starting values. Models are pre-compiled and run as SLURM
+      array jobs over the participant &times; condition grid. Convergence is assessed by
+      <code>R&#770;</code>, effective sample size, divergent-transition counts, and trace plots, saved
+      with every fit. Parameter-recovery datasets were simulated across noise levels and loading
+      structures at both <code>p = 30</code> and <code>p = 128</code> before the model was applied to
+      the empirical data, and three linking structures &mdash; free, independent, and unit-variance
+      factor covariance &mdash; are implemented for comparison.
+    </p>
   </section>
 
   <section>
     <h2>Results</h2>
-    <p class="lead">
-      Results below are from a single participant; the group-level analysis is in progress.
+    <p>
+      The results below are from a single participant; the group-level analysis is in progress, and
+      they are presented as an illustration of the framework rather than as a substantive finding.
     </p>
 
     <figure class="research-figure">
-      <img src="assets/research/joint-ddm-forest.png" alt="Four panels showing posterior means with credible intervals for the starting point, drift rate for old items, drift rate for new items, and non-decision time, each compared across the no-reward, hit-reward, and correct-rejection-reward conditions.">
+      <img src="assets/research/joint-ddm-forest.png" alt="Four panels showing posterior means with credible intervals for the starting point, drift rate for old items, drift rate for new items, and non-decision time, compared across the three reward conditions.">
       <figcaption><span class="fig-label">Figure 3.</span> Decision parameters by reward condition.
-        Both reward conditions produced faster responses than no reward (1.58 s &rarr; 1.37 and 1.43 s)
-        with no loss of accuracy, and reward improved the drift rate for new items in both conditions
-        &mdash; even under hit reward, where responding "new" earned nothing.</figcaption>
+        Responses were faster under both reward conditions than under no reward (1.58 s &rarr; 1.37
+        and 1.43 s) without a decrease in accuracy, and the drift rate for new items improved under
+        both, including hit reward, where responding "new" carried no payoff.</figcaption>
     </figure>
 
     <figure class="research-figure">
-      <img src="assets/research/joint-lambda.png" alt="Three heatmaps, one per reward condition, showing the factor loading matrix. Rows are brain regions grouped into cerebellum, subcortical, occipital, parietal, temporal, medial temporal lobe, cingulate and insula, and frontal; columns are non-decision time, starting point, and drift rate.">
+      <img src="assets/research/joint-lambda.png" alt="Three heatmaps, one per reward condition, showing the factor loading matrix with brain regions grouped by anatomical division against the three decision components.">
       <figcaption><span class="fig-label">Figure 4.</span> The estimated loading matrix
-        <code>&Lambda;</code>, one panel per reward condition &mdash; that is, which regions track
-        which component of the decision process. Cerebellar regions dominated the non-decision
-        column in all three conditions, consistent with non-decision time comprising encoding and
-        motor execution; under correct-rejection reward the thalamus loaded on drift rate.</figcaption>
+        <code>&Lambda;</code> by reward condition, indicating which regions track which component of
+        the decision process. Cerebellar regions were prominent in the non-decision column across
+        conditions, which is consistent with non-decision time comprising encoding and motor
+        execution; under correct-rejection reward, thalamic regions loaded on drift rate.</figcaption>
     </figure>
 
     <p>
-      One result is worth reading carefully because it looks backwards. Under correct-rejection
-      reward the starting point leaned toward "old", even though that condition pays for saying
-      "new". The resolution is that the <em>penalized</em> error in that condition is a miss, so
-      leaning "old" is the safe default when evidence is ambiguous &mdash; the model recovers a bias
-      that tracks the penalty structure rather than the reward structure.
+      One pattern is worth noting. Under correct-rejection reward the starting point leaned toward
+      "old", although that condition pays for responding "new". The penalized error in that
+      condition is a miss, so a bias toward "old" reduces exposure to the penalty when evidence is
+      ambiguous; the estimated bias therefore tracks the penalty structure rather than the reward
+      structure. For this participant the two rewarded conditions ran in a fixed order, so reward
+      condition is not separable from fatigue, which the counterbalanced group-level analysis is
+      intended to address.
     </p>
-    <div class="callout">
-      <strong>An honest caveat.</strong> For this participant the two rewarded conditions ran in a
-      fixed order, so reward condition is confounded with fatigue. Separating them is exactly what
-      the counterbalanced group-level analysis is for, and is the reason these results are presented
-      as an illustration of the framework rather than as a substantive finding.
-    </div>
   </section>
 
   <div class="page-nav">
