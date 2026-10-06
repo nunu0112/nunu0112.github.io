@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=12">
+<link rel="stylesheet" href="style.css?v=13">
 </head>
 <body>
 
@@ -115,8 +115,11 @@
       <figcaption><span class="fig-label">Figure 1.</span> The random forest weighting function.
         Each tree gives positive weight to training examples sharing a leaf with the target point and
         zero to the rest; averaging over trees measures how often each example falls in the same
-        leaf, which defines the adaptive neighborhood used to estimate the effect there. Reproduced
-        from Athey &amp; Wager (2019).</figcaption>
+        leaf, which defines the adaptive neighborhood used to estimate the effect there.
+        <span class="fig-source">Adapted from &ldquo;Estimating Treatment Effects With Causal
+        Forests: An Application,&rdquo; by S. Athey and S. Wager, 2019, <em>Observational Studies,
+        5</em>(2), pp. 37&ndash;51
+        (<a href="https://doi.org/10.1353/obs.2019.0001" target="_blank" rel="noopener">https://doi.org/10.1353/obs.2019.0001</a>).</span></figcaption>
     </figure>
 
     <h3>The estimator</h3>
