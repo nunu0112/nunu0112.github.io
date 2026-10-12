@@ -78,14 +78,13 @@
     </p>
 
     <figure class="research-figure">
-      <img src="assets/research/joint-framework.png" alt="A schematic with three linked nodes: theta, omega, and delta. Theta points to a behavioral panel showing diffusion evidence-accumulation traces plotted against response time; delta points to a neural panel showing axial fMRI activation slices. Omega, between them, is the linking function.">
-      <figcaption><span class="fig-label">Figure 1.</span> The joint modeling framework: a behavioral
-        model (&theta;), a neural model (&delta;), and a linking function (&Omega;) estimated
-        together, so that the two modalities constrain each other.
-        <span class="fig-source">Adapted from &ldquo;Informing Cognitive Abstractions Through
-        Neuroimaging: The Neural Drift Diffusion Model,&rdquo; by B. M. Turner, L. van Maanen, and
-        B. U. Forstmann, 2015, <em>Psychological Review, 122</em>(2), pp. 312&ndash;336
-        (<a href="https://doi.org/10.1037/a0038894" target="_blank" rel="noopener">https://doi.org/10.1037/a0038894</a>).</span></figcaption>
+      <img src="assets/research/joint-framework.png" alt="A schematic with three linked nodes. Theta, holding the trial-level decision parameters tau, zeta and xi, points to a behavioral panel showing diffusion evidence-accumulation traces for the three reward conditions between the old and new boundaries. Delta, holding region-of-interest beta estimates, points to a neural panel showing sagittal, coronal and axial brain slices with activation clusters. An arrow labelled lambda runs from theta to delta, and omega above them holds the hyperparameters phi, psi and kappa squared.">
+      <figcaption><span class="fig-label">Figure 1.</span> The joint modeling framework. The
+        trial-level decision parameters (&theta;) generate choices and response times, the
+        region-of-interest estimates (&delta;) generate the neural data, and the loading matrix
+        <code>&Lambda;</code> maps the former onto the latter, with the factor covariance, residual
+        variances and lasso penalty collected in &Omega;. All components are estimated together, so
+        that the two modalities constrain each other.</figcaption>
     </figure>
 
     <p>
